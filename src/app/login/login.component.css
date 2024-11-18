@@ -1,0 +1,217 @@
+/* Container principal */
+.login-container {
+  display: flex;
+  justify-content: center; /* Centrer horizontalement sur la page */
+  align-items: center; /* Centrer verticalement sur la page */
+  height: 100vh;
+  background-color: #888;
+}
+
+/* Contenu interne limité */
+.login-content {
+  display: flex;
+  width: 40%;
+  height: 600px;
+  background-color: #facccc;
+  margin: 25px ;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden; /* S'assurer que tout reste dans les limites */
+}
+
+/* Section gauche : Image */
+.login-image {
+  flex: 1; /* Prend tout l'espace disponible */
+  background-image: url('/images/img_login.jpg');
+  background-size: cover;
+  background-position: center;
+  min-height: 500px; /* Hauteur minimale pour petits écrans */
+}
+
+img {
+  width: 100px;
+  margin: none;
+}
+/* Style de la fenêtre modale */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal-container:hover {
+  transform: scale(1.02);
+}
+
+.modal-title {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+/* Style des champs de code */
+.code-input {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.code-input input {
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  text-align: center;
+  border: 1px solid #4CAF50;
+  border-radius: 8px;
+  outline: none;
+  position: relative;
+  border-bottom: 2px solid #888; /* Trait dynamique */
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.code-input input:focus {
+  border-bottom-color: #4CAF50;
+  background-color: #f0fff4; /* Couleur douce au focus */
+}
+
+.hint-text {
+  color: #888;
+  font-size: 0.9rem;
+  margin-top: -8px;
+  margin-bottom: 1.5rem;
+}
+
+/* Boutons modaux */
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn:focus {
+  outline: 2px solid #028036;
+  outline-offset: 2px;
+}
+
+.btn-confirm {
+  background-color: #227C70;
+  color: rgb(255, 255, 255);
+ 
+}
+
+.btn-confirm:hover {
+  background-color: #08ad52;
+}
+
+#valider {
+    width: 53%;
+    margin-left: 24%;
+   
+}
+.btn-cancel {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-cancel:hover {
+  background-color: darkred;
+}
+
+/* Style du composant de connexion */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: var(--background-grey);
+}
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.logo {
+  max-width: 150px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 600px;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+input {
+  width: 90%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+input:focus {
+  border-color: var(--primary-green);
+  background-color: #f0fff4;
+  outline: 2px solid var(--focus-outline);
+}
+
+.secret-connection {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.secret-connection a:hover {
+  text-decoration: underline;
+}
+
+/* Transitions et responsive design */
+@media (max-width: 768px) {
+  .login-form {
+    padding: 1rem;
+    width: 90%;
+  }
+  .modal-container {
+    width: 90%;
+ 
+  }
+
+  h6 {
+    margin: 1px;
+  }
+}

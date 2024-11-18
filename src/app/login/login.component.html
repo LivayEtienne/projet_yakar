@@ -1,0 +1,69 @@
+<!-- login.component.html -->
+<div class="login-container">
+
+    <div class="login-image">
+      <div class="header">
+      </div>
+   </div>
+    
+    <!-- Formulaire de connexion -->
+     
+    <div class="login-content">
+     
+       
+     
+        <form class="login-form">
+          <div>
+            <img src="images/logo.png" alt="Logo-Yakar">
+            <h6>Votre plateforme de controle pour vos machines</h6>
+          </div>
+          <h1>Connexion</h1>
+          <!-- Champ email -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="Entrer l'email" required>
+          </div>
+          
+          <!-- Champ mot de passe -->
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" placeholder="Entrer le mot de passe" required>
+          </div>
+          
+          <!-- Bouton de connexion -->
+          <button type="submit" class="btn btn-confirm" id="valider">Se connecter</button>
+          
+          <!-- Connexion par code secret -->
+          <div class="secret-connection">
+            <h5>Connexion par code secret</h5>
+            <button (click)="showSecretModal = true" class="btn btn-confirm">Connexion par code secret</button>
+          </div>
+        </form>
+  
+    </div>
+  
+    <!-- Modal pour le code secret -->
+    <div class="modal-overlay" *ngIf="showSecretModal">
+      <div class="modal-container">
+        <h2 class="modal-title">Entrer le code secret</h2>
+        
+        <!-- Entrée pour les 4 chiffres -->
+        <div class="code-input">
+          <input type="text" maxlength="1" [(ngModel)]="code[0]" (input)="focusNext($event, 1)" />
+          <input type="text" maxlength="1" [(ngModel)]="code[1]" (input)="focusNext($event, 2)" />
+          <input type="text" maxlength="1" [(ngModel)]="code[2]" (input)="focusNext($event, 3)" />
+          <input type="text" maxlength="1" [(ngModel)]="code[3]" required>
+        </div>
+        
+        <!-- Texte d'indication -->
+        <p class="hint-text">Nombre maximal 4 chiffres</p>
+        
+        <!-- Boutons de validation/annulation -->
+        <div class="modal-buttons">
+          <button (click)="onSubmit(); showSecretModal = false" class="btn btn-confirm">Valider</button>
+          <button (click)="onCancel(); showSecretModal = false" class="btn btn-cancel">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
