@@ -1,0 +1,144 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  gap: 0.2rem; /* Espacement général entre les sections */
+}
+
+.header-container {
+  flex-shrink: 0;
+  margin-bottom: 0.2rem; /* Espacement sous le header */
+}
+
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  overflow-y: auto;
+  gap: 0.2rem; /* Espacement entre la sidebar et le contenu */
+}
+
+.app-sidebar {
+  width: 180px; /* Largeur optimisée de la sidebar */
+  background-color: #f0f0f0;
+  flex-shrink: 0;
+  padding: 0.2rem; /* Espacement réduit */
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  gap: 0.5rem; /* Espacement accru entre les sections */
+  align-items: center;
+  padding: 0.2rem; /* Réduction du padding global */
+}
+
+.graph-container {
+  max-width: 100%;
+  width: 100%;
+  max-height: 520px; /* Hauteur ajustée pour éviter que le graphique cache les blocs */
+  margin-bottom: 0.5rem; /* Espacement réduit autour du graphique */
+  display: flex;
+  justify-content: center;
+}
+
+.cards-container,
+.footer-cards-container {
+  display: flex;
+  justify-content: center; /* Centrer les cartes */
+  flex-wrap: wrap;
+  gap: 0.3rem; /* Espacement minimal entre les cartes */
+  margin-top: 0.5rem; /* Ajout d'espace au-dessus des blocs inférieurs */
+}
+
+/* Styles des cartes */
+.average-card,
+.temperature-card,
+.humidity-card,
+.moyenne1,
+.moyenne2,
+.moyenne3 {
+  width: 140px; /* Réduction de la largeur des cartes */
+  height: 100px; /* Hauteur ajustée */
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  padding: 0.2rem; /* Réduction du padding intérieur */
+  position: relative; /* Nécessaire pour le reflet */
+  overflow: hidden; /* Assure que le reflet ne déborde pas */
+}
+
+/* Reflet */
+.average-card::after,
+.temperature-card::after,
+.humidity-card::after,
+.moyenne1::after,
+.moyenne2::after,
+.moyenne3::after {
+  content: "";
+  position: absolute;
+  bottom: 0; /* Alignement au bas de la carte */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: inherit; /* Récupère le fond de la carte */
+  opacity: 0.3; /* Opacité du reflet */
+  transform: translateY(100%) rotateX(180deg); /* Retourne l'élément pour créer un reflet */
+  filter: blur(5px); /* Flou pour un effet de reflet doux */
+  z-index: -1; /* Envoie le reflet derrière la carte */
+}
+
+/* Couleurs */
+.average-card,
+.moyenne1 {
+  background-color: #1e1e1e;
+  color: white;
+}
+
+.temperature-card,
+.moyenne2 {
+  background-color: #D32F2F;
+  color: white;
+}
+
+.humidity-card,
+.moyenne3 {
+  background-color: #b71c1c;
+  color: white;
+}
+
+/* Responsivité */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .app-sidebar {
+    width: 100%;
+    margin-bottom: 0.2rem; /* Ajout d'espace si la sidebar passe en pleine largeur */
+  }
+
+  .cards-container,
+  .footer-cards-container {
+    display: flex;
+    justify-content: center; /* Centrer les cartes */
+    flex-wrap: wrap;
+    gap: 0.3rem; /* Espacement uniforme entre les blocs inférieurs */
+    margin-top: 0.5rem; /* Ajout d'espace au-dessus des blocs inférieurs */
+  }
+
+  .average-card,
+  .temperature-card,
+  .humidity-card,
+  .moyenne1,
+  .moyenne2,
+  .moyenne3 {
+    width: 90%; /* Les cartes occupent presque toute la largeur */
+    max-width: 250px; /* Limitation de la largeur maximale */
+  }
+
+  .graph-container {
+    max-width: 100%; /* Le graphique s'adapte à la largeur */
+    max-height: 300px; /* Hauteur contrôlée pour éviter de cacher les blocs inférieurs */
+  }
+}
