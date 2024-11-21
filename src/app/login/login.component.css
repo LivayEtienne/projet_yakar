@@ -233,3 +233,17 @@ input:focus {
 input.invalid {
   border: 1px solid red;
 }
+
+.valid {
+  border: 2px solid green; /* Bordure verte si rempli */
+  background-color: #e6ffe6; /* Optionnel : Fond vert pâle */
+}
+
+.invalid {
+  border: 2px solid red; /* Bordure rouge si vide */
+  background-color: #ffe6e6; /* Optionnel : Fond rouge pâle */
+}
+
+.disable-mouse {
+  pointer-events: none; /* Toujours désactiver les interactions de la souris */
+}

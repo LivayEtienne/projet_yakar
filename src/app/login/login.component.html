@@ -67,50 +67,40 @@
     </div>
   
     <!-- Modal pour le code secret -->
-    <div class="modal-overlay" *ngIf="showModal" >
-      <div class="modal-container">
-        <h2 class="modal-title">Entrer le code secret</h2>
-    
-        <!-- Entrée pour les 4 chiffres -->
-        <div class="code-input">
-          <input 
-          [(ngModel)]="code[0]"
-            type="text" 
-            maxlength="1"  
-            (input)="focusNext($event, 1)"
-          />
-          <input
-          [(ngModel)]="code[1]" 
-            type="text" 
-            maxlength="1" 
-            (input)="focusNext($event, 2)"
-          />
-          <input 
-          [(ngModel)]="code[2]"
-            type="text" 
-            maxlength="1"  
-            (input)="focusNext($event, 3)"
-          />
-          <input 
-          [(ngModel)]="code[3]"
-            type="text" 
-            maxlength="1" 
-            (input)="validateCode()"
-          />
-        </div>
-  
-          <!-- Message d'erreur -->
-          <div *ngIf="errorMessageCode" class="alert error-message"> 
-            {{ errorMessageCode }}
-          </div>
-          <br>
-        <!-- Boutons de validation/annulation -->
-        <div class="modal-buttons">
-          <button (click)="validateCode()" class="btn btn-confirm">Valider</button>
-          <button (click)="closeModal()" class="btn btn-cancel">Annuler</button>
-        </div>
-      </div>
+<div class="modal-overlay" *ngIf="showModal">
+  <div class="modal-container">
+    <h2 class="modal-title">Entrer le code secret</h2>
+
+    <!-- Entrée pour les 4 chiffres -->
+    <div class="code-input">
+      <input
+        *ngFor="let char of code; let i = index"
+        type="text"
+        maxlength="1"
+        [value]="maskedCode[i]" 
+        (input)="onInput($event, i)"
+        (keydown)="handleKeydown($event, i)"
+        readonly
+        [ngClass]="{'valid': code[i] !== '', 'invalid': code[i] === ''}"
+        class="disable-mouse"
+        tabindex="-1"
+      />
     </div>
+
+    <!-- Message d'erreur -->
+    <div *ngIf="errorMessageCode" class="alert error-message">
+      {{ errorMessageCode }}
+    </div>
+    <br />
+
+    <!-- Boutons de validation/annulation -->
+    <div class="modal-buttons">
+      <button (click)="validateCode()" class="btn btn-confirm">Valider</button>
+      <button (click)="closeModal()" class="btn btn-cancel">Annuler</button>
+    </div>
+  </div>
+</div>
+
    
   </div>
   
