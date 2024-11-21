@@ -9,61 +9,108 @@
     <!-- Formulaire de connexion -->
      
     <div class="login-content">
-     
-       
-     
-        <form class="login-form">
-          <div>
-            <img src="images/logo.png" alt="Logo-Yakar">
-            <h6>Votre plateforme de controle pour vos machines</h6>
-          </div>
-          <h1>Connexion</h1>
-          <!-- Champ email -->
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="Entrer l'email" required>
-          </div>
-          
-          <!-- Champ mot de passe -->
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" placeholder="Entrer le mot de passe" required>
-          </div>
-          
-          <!-- Bouton de connexion -->
-          <button type="submit" class="btn btn-confirm" id="valider">Se connecter</button>
-          
-          <!-- Connexion par code secret -->
-          <div class="secret-connection">
-            <h5>Connexion par code secret</h5>
-            <button (click)="showSecretModal = true" class="btn btn-confirm">Connexion par code secret</button>
-          </div>
-        </form>
-  
+      <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form" novalidate>
+        <div>
+          <img src="images/logo.png" alt="Logo-Yakar">
+          <h6>Votre plateforme de contrôle pour vos machines</h6>
+        </div>
+        <h1 id="titre">Connexion</h1>
+      
+        <!-- Champ email -->
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Entrer l'email"
+            [class.invalid]="showEmail?.invalid && (showEmail?.touched || showEmail?.dirty)"
+          />
+          <small *ngIf="showEmail?.invalid && (showEmail?.touched || showEmail?.dirty)" class="error-message">
+            <span *ngIf="showEmail?.errors?.['required']">L'email est requis.</span>
+            <span *ngIf="showEmail?.errors?.['email']">L'adresse email est invalide.</span>
+          </small>
+        </div>
+      
+        <!-- Champ mot de passe -->
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            placeholder="Entrer le mot de passe"
+            [class.invalid]="showPassword?.invalid && (showPassword?.touched || showPassword?.dirty)"
+          />
+          <small *ngIf="showPassword?.invalid && (showPassword?.touched || showPassword?.dirty)" class="error-message">
+            <span *ngIf="showPassword?.errors?.['required']"><br>Le mot de passe est requis.</span>
+            <span *ngIf="showPassword?.errors?.['minlength']"><br>
+              Le mot de passe doit contenir au moins 6 caractères.
+            </span>
+          </small>
+        </div>
+         <!-- Message d'erreur -->
+        <div *ngIf="errorMessage" class="alert error-message">
+          {{ errorMessage }}
+        </div>
+      <br>
+        <!-- Bouton de connexion -->
+        <button id="btnSubmit" type="submit" (click)="login()" class="btn btn-confirm" [disabled]="loginForm.invalid">Se connecter</button>
+      
+        <!-- Connexion par code secret -->
+        <div class="secret-connection">
+          <h5>Connexion par code secret</h5>
+          <button type="button" (click)="showSecretModal()" class="btn btn-confirm">Connexion code secret</button>
+        </div>
+      </form>
+      
     </div>
   
     <!-- Modal pour le code secret -->
-    <div class="modal-overlay" *ngIf="showSecretModal">
+    <div class="modal-overlay" *ngIf="showModal" >
       <div class="modal-container">
         <h2 class="modal-title">Entrer le code secret</h2>
-        
+    
         <!-- Entrée pour les 4 chiffres -->
         <div class="code-input">
-          <input type="text" maxlength="1" [(ngModel)]="code[0]" (input)="focusNext($event, 1)" />
-          <input type="text" maxlength="1" [(ngModel)]="code[1]" (input)="focusNext($event, 2)" />
-          <input type="text" maxlength="1" [(ngModel)]="code[2]" (input)="focusNext($event, 3)" />
-          <input type="text" maxlength="1" [(ngModel)]="code[3]" required>
+          <input 
+          [(ngModel)]="code[0]"
+            type="text" 
+            maxlength="1"  
+            (input)="focusNext($event, 1)"
+          />
+          <input
+          [(ngModel)]="code[1]" 
+            type="text" 
+            maxlength="1" 
+            (input)="focusNext($event, 2)"
+          />
+          <input 
+          [(ngModel)]="code[2]"
+            type="text" 
+            maxlength="1"  
+            (input)="focusNext($event, 3)"
+          />
+          <input 
+          [(ngModel)]="code[3]"
+            type="text" 
+            maxlength="1" 
+            (input)="validateCode()"
+          />
         </div>
-        
-        <!-- Texte d'indication -->
-        <p class="hint-text">Nombre maximal 4 chiffres</p>
-        
+  
+          <!-- Message d'erreur -->
+          <div *ngIf="errorMessageCode" class="alert error-message"> 
+            {{ errorMessageCode }}
+          </div>
+          <br>
         <!-- Boutons de validation/annulation -->
         <div class="modal-buttons">
-          <button (click)="onSubmit(); showSecretModal = false" class="btn btn-confirm">Valider</button>
-          <button (click)="onCancel(); showSecretModal = false" class="btn btn-cancel">Annuler</button>
+          <button (click)="validateCode()" class="btn btn-confirm">Valider</button>
+          <button (click)="closeModal()" class="btn btn-cancel">Annuler</button>
         </div>
       </div>
     </div>
+   
   </div>
   
