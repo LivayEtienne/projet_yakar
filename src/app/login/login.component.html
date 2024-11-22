@@ -27,6 +27,7 @@
             [class.invalid]="showEmail?.invalid && (showEmail?.touched || showEmail?.dirty)"
           />
           <small *ngIf="showEmail?.invalid && (showEmail?.touched || showEmail?.dirty)" class="error-message">
+            <br>
             <span *ngIf="showEmail?.errors?.['required']">L'email est requis.</span>
             <span *ngIf="showEmail?.errors?.['email']">L'adresse email est invalide.</span>
           </small>
@@ -42,6 +43,7 @@
             placeholder="Entrer le mot de passe"
             [class.invalid]="showPassword?.invalid && (showPassword?.touched || showPassword?.dirty)"
           />
+          <br>
           <small *ngIf="showPassword?.invalid && (showPassword?.touched || showPassword?.dirty)" class="error-message">
             <span *ngIf="showPassword?.errors?.['required']"><br>Le mot de passe est requis.</span>
             <span *ngIf="showPassword?.errors?.['minlength']"><br>

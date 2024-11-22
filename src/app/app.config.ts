@@ -1,10 +1,10 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { TokenInterceptor } from './interceptor/authInterceptor';
 
 
 export const appConfig: ApplicationConfig = {
@@ -13,6 +13,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes), provideClientHydration(),
     [provideHttpClient(withFetch())], 
     provideAnimationsAsync(),
-    MessageService
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ]
 };

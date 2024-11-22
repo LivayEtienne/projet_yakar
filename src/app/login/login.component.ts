@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Connexion au WebSocket
-    this.webSocketService.connect('ws://localhost:8080/');
+    this.webSocketService.connect('ws://localhost:8000/');
 
     // Écoute des données reçues
     this.webSocketService.getData().subscribe({
@@ -137,6 +137,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       // Soumettre le code au backend
       this.authService.loginWithCode(codeValue).subscribe({
         next: (res: any) => {
+          this.authService.saveToken(res.token); // Stocke le token
           this.handleRedirection(res.role); // Redirection après connexion réussie
           this.showModal = false; // Fermer le modal
           this.incorrectAttempts = 0; // Réinitialiser le compteur
@@ -177,6 +178,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         .login(this.loginForm.value.email, this.loginForm.value.password)
         .subscribe({
           next: (res: any) => {
+            this.authService.saveToken(res.token); // Stocke le token
             this.handleRedirection(res.role); // Redirection après connexion réussie
           },
           error: (err) => {
