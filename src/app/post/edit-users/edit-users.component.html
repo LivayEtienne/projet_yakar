@@ -1,0 +1,50 @@
+<div class="container">
+  <h1 class="title">Yakaar</h1>
+  <h2 class="modification-title">MODIFICATION</h2>
+
+  <form (ngSubmit)="updateUser()" #userForm="ngForm">
+    <!-- Formulaire avec les champs pour l'utilisateur -->
+    <div class="input-group">
+      <div class="form-field">
+        <label>Nom</label>
+        <input type="text" [(ngModel)]="user.nom" name="nom" #nom="ngModel" required />
+        <div *ngIf="nom.invalid && nom.touched" class="error">
+          Nom est obligatoire.
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Email</label>
+        <input type="email" [(ngModel)]="user.email" name="email" #email="ngModel" required />
+        <div *ngIf="email.invalid && email.touched" class="error">
+          Veuillez entrer un email valide.
+        </div>
+      </div>
+    </div>
+
+    <div class="input-group">
+      <div class="form-field">
+        <label>Prénom</label>
+        <input type="text" [(ngModel)]="user.prenom" name="prenom" #prenom="ngModel" required />
+        <div *ngIf="prenom.invalid && prenom.touched" class="error">
+          Prénom est obligatoire.
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>Téléphone</label>
+        <input type="tel" [(ngModel)]="user.telephone" name="telephone" #telephone="ngModel" required pattern="^(77|78|70)[0-9]{7}$" />
+        <div *ngIf="telephone.invalid && telephone.touched" class="error">
+          Le numéro doit commencer par 77, 78 ou 70 et contenir 9 chiffres.
+        </div>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button routerLink="/list-users" type="button" class="btn-cancel">Annuler</button>
+      <button type="submit" class="btn-submit" [disabled]="userForm.invalid">Modifier</button>
+    </div>
+  </form>
+</div>
+
+<!-- Inclure la modale -->
+

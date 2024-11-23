@@ -1,0 +1,25 @@
+<!-- src/app/post/list.component.html -->
+<div class="container">
+    <h1>Liste des Données</h1>
+  
+    <div *ngIf="donnes.length > 0; else noData">
+      <ul>
+        <li *ngFor="let donne of donnes">
+          <div class="donnee-item">
+            <h3>{{ donne.temperature }}°C</h3>
+            <p>Humidité: {{ donne.humidite }}%</p>
+            <p>Date: {{ donne.date }}</p> <!-- Affiche la date  -->
+  
+            <!-- Bouton pour supprimer une donnée -->
+            <button (click)="deleteDonne(donne._id)" class="btn btn-danger">Supprimer</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  
+    <!-- Si aucune donnée n'est disponible -->
+    <ng-template #noData>
+      <p>Aucune donnée disponible pour le moment.</p>
+    </ng-template>
+  </div>
+  
