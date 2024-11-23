@@ -1,0 +1,82 @@
+<div class="container">
+  <header class="header">
+    <div class="logo">Yakaar</div>
+    <nav class="nav">
+      <a href="#">ACCUEIL</a>
+      <a href="#">PROFIL</a>
+      <a href="#">DECONNEXION</a>
+    </nav>
+  </header>
+
+    
+  <div class="sidebar">
+    <div class="icon">
+      <i class="fas fa-th-large"></i> <!-- Icône dashboard -->
+    </div>
+    <div class="icon">
+      <i class="fas fa-clipboard"></i> <!-- Icône notes -->
+    </div>
+    <div class="icon">
+      <i class="fas fa-users"></i> <!-- Icône utilisateurs -->
+    </div>
+  </div>
+  
+
+  <main class="main-content">
+    <div class="header-content">
+      <h1>Liste des utilisateurs</h1>
+      <button  routerLink="/users/create" class="add-btn"> <i class="fas fa-users"></i> AJOUTER</button>
+    </div>
+
+    <div class="table-container">
+      <input type="text" class="search-bar" placeholder="Rechercher" [(ngModel)]="searchQuery" />
+       
+      <table class="users-table">
+        <thead>
+          <tr>
+            <th>NOM</th>
+            <th>Prenom</th>
+            <th>Role</th>
+            <th>Email</th>
+            <th>Numero</th>
+            <th>Accès</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of paginatedUsers">
+            <td>{{ user.nom }}</td>
+            <td>{{ user.prenom }}</td>
+            <td>
+                <span     (click)="changeRole(user)"  class="role" [ngClass]="{ 'admin': user.role === 'admin', 'user': user.role === 'user' }">{{ user.role }}</span>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.telephone }}</td>
+            <td>
+              <span  (click)="toggleAccess(user)" class="status" [ngClass]="{ 'active': !user.archive, 'inactive': user.archive }">
+                {{ user.archive ? 'Inactive' : 'Active' }}
+              </span>
+            </td>
+            <td>
+              <button class="action-btn edit"> <a [routerLink]="['/users/edit', user._id]"><i class="fa-solid fa-pen-to-square"></i></a> </button>
+              
+             <button (click)="deleteUser(user._id)" class="action-btn delete"> <i class="fa-solid fa-trash-can"></i> </button>
+              
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination-controls">
+        <button
+          *ngFor="let page of getPageNumbers()"
+          [class.active]="currentPage === page"
+          (click)="goToPage(page)"
+        >
+          {{ page }}
+        </button>
+      </div>
+      
+    </div>
+  </main>
+</div>
+<app-modal></app-modal>
