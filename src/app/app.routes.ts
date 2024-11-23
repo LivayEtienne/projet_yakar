@@ -8,7 +8,6 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent ,  },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'dashboard/admin', component: DashboardComponent, canActivate: [AuthGuard]},
-   // { path: 'dashboard/user', component: UserDashboardComponent },
 
   ];
   

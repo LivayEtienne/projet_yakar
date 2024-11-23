@@ -21,7 +21,7 @@
 /* Section gauche : Image */
 .login-image {
   flex: 1; /* Prend tout l'espace disponible */
-  background-image: url('/images/img_login.jpg');
+  background-image: url('/assets/img_login.jpg');
   background-size: cover;
   background-position: center;
   min-height: 500px; /* Hauteur minimale pour petits écrans */
