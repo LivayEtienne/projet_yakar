@@ -3,12 +3,19 @@
     <app-header></app-header>
   </div>
   <div class="main-container">
-    <app-sidebar></app-sidebar>
- 
+    <div class="sidebar-container">
+      <app-sidebar></app-sidebar>
+      
+      <!-- Ventilateur positionné sous la sidebar -->
+      <div class="fan-container">
+        <app-footer></app-footer>
+      </div>
+    </div>
+
     <div class="content-container">
       <div class="cards-container">
         <app-average-card></app-average-card>
-        <app-temperature-card></app-temperature-card>
+        <app-temperature></app-temperature>
         <app-humidity-card></app-humidity-card>
       </div>
       <div class="graph-container">
@@ -18,10 +25,6 @@
         <app-moyenne1></app-moyenne1>
         <app-moyenne2></app-moyenne2>
         <app-moyenne3></app-moyenne3>
-        <div class="fan-container">
-          <app-footer></app-footer>
-        </div>
-       
       </div>
     </div>
   </div>

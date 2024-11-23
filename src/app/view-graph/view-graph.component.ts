@@ -1,84 +1,51 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-view-graph',
   templateUrl: './view-graph.component.html',
   standalone: true,
-  styleUrls: ['./view-graph.component.css']
+  styleUrls: ['./view-graph.component.css'],
 })
 export class ViewGraphComponent implements OnInit {
-  public options: any = {
-    chart: {
-      type: 'line',
-      width: 810,
-      height: 450 // Hauteur ajustée pour plus de visibilité
-    },
-    title: {
-      text: 'Évolution des températures et de l\'humidité'
-    },
-    credits: {
-      enabled: false
-    },
-    xAxis: {
-      categories: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
-      tickmarkPlacement: 'on',
+  public options: any;
+  public moyennes: any = {};
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    // Remplacer l'appel API par des données fictives
+    const categories = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+    
+    // Données fictives pour les moyennes de température et d'humidité
+    const tempData = [22, 24, 21, 23, 25, 26, 24]; // Températures fictives
+    const humData = [45, 50, 48, 55, 60, 65, 55]; // Humidité fictive
+
+    this.options = {
+      chart: {
+        type: 'line',
+      },
       title: {
-        text: 'Jours'
-      }
-    },
-    yAxis: [
-      { // Axe Y pour la température
-        title: {
-          text: 'Température (°C)'
-        },
-        labels: {
-          format: '{value}°C'
-        },
-        min: 0, // Valeur minimale pour la température
-        max: 50, // Valeur maximale pour la température
-        opposite: false // Positionné à gauche
+        text: 'Évolution des températures et de l\'humidité',
       },
-      { // Axe Y pour l'humidité
-        title: {
-          text: 'Humidité (%)'
-        },
-        labels: {
-          format: '{value} %'
-        },
-        min: 0, // Valeur minimale pour l'humidité
-        max: 100, // Valeur maximale pour l'humidité
-        opposite: true // Positionné à droite
-      }
-    ],
-    tooltip: {
-      shared: true // Combine les infobulles des séries
-    },
-    series: [
-      {
-        name: 'Température',
-        type: 'line',
-        data: [20, 35, 19, 27, 22, 24, 28],
-        yAxis: 0, // Associe cette série au premier axe Y (température)
-        tooltip: {
-          valueSuffix: '°C'
-        }
+      xAxis: {
+        categories,
+      },
+      yAxis: [{
+        title: { text: 'Température (°C)' },
+        min: 0,
       },
       {
-        name: 'Humidité',
-        type: 'line',
-        data: [25, 33, 10, 18, 30, 29, 20],
-        yAxis: 1, // Associe cette série au second axe Y (humidité)
-        tooltip: {
-          valueSuffix: ' %'
-        }
-      }
-    ]
-  };
+        title: { text: 'Humidité (%)' },
+        opposite: true,
+      }],
+      series: [
+        { name: 'Température', data: tempData },
+        { name: 'Humidité', data: humData },
+      ],
+    };
 
-  constructor() { }
-
-  ngOnInit() {
-    Highcharts.chart('container', this.options);
+    Highcharts.chart('container', this.options); // Utilisez le même ID que dans le HTML
   }
 }
