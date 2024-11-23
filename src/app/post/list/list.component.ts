@@ -5,11 +5,10 @@ import { DonneesService } from '../donnes.service'; // Assurez-vous que le chemi
 import { RouterModule } from '@angular/router';  // Importer RouterModule pour navigation
 
 @Component({
-  selector: 'app-list',
-  standalone: true,  // Marque ce composant comme autonome
-  imports: [CommonModule, RouterModule],  // Importer les modules nécessaires
-  templateUrl: './list.component.html',
-  styleUrls: ['./list.component.css']
+    selector: 'app-list', // Marque ce composant comme autonome
+    imports: [CommonModule, RouterModule], // Importer les modules nécessaires
+    templateUrl: './list.component.html',
+    styleUrls: ['./list.component.css']
 })
 export class ListComponent {
   donnes: any[] = [];

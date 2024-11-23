@@ -8,11 +8,10 @@ import { ModalComponent } from '../../modal/modal.component';
 import { MessageService } from '../message.service';
 
 @Component({
-  selector: 'app-list-users',
-  standalone: true, // Indique que ce composant est autonome
-  imports: [CommonModule, RouterModule, FormsModule,ModalComponent], // Ajout de FormsModule ici
-  templateUrl: './list-users.component.html',
-  styleUrls: ['./list-users.component.css'],
+    selector: 'app-list-users', // Indique que ce composant est autonome
+    imports: [CommonModule, RouterModule, FormsModule, ModalComponent], // Ajout de FormsModule ici
+    templateUrl: './list-users.component.html',
+    styleUrls: ['./list-users.component.css']
 })
 export class ListUsersComponent {
   users: User[] = []; // Liste des utilisateurs

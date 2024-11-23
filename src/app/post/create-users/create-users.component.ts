@@ -9,11 +9,10 @@ import { Location } from '@angular/common'
 
 
 @Component({
-  selector: 'app-create-user',
-  standalone: true,
-  templateUrl: './create-users.component.html',
-  styleUrls: ['./create-users.component.css'],
-  imports: [CommonModule, ReactiveFormsModule], // Ajouter CommonModule et ReactiveFormsModule
+    selector: 'app-create-user',
+    templateUrl: './create-users.component.html',
+    styleUrls: ['./create-users.component.css'],
+    imports: [CommonModule, ReactiveFormsModule]
 })
 export class CreateUserComponent {
   userForm: FormGroup;

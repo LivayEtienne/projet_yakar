@@ -8,11 +8,10 @@ import { MessageService } from '../message.service'; // Importation du service p
 
 
 @Component({
-  selector: 'app-user-edit',
-  standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './edit-users.component.html',
-  styleUrls: ['./edit-users.component.css'],
+    selector: 'app-user-edit',
+    imports: [CommonModule, FormsModule, RouterModule],
+    templateUrl: './edit-users.component.html',
+    styleUrls: ['./edit-users.component.css']
 })
 export class UserEditComponent implements OnInit {
   userId!: string;
