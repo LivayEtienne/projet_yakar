@@ -25,6 +25,8 @@ export class ViewGraphComponent implements OnInit {
     this.options = {
       chart: {
         type: 'line',
+        width :810
+        
       },
       title: {
         text: 'Évolution des températures et de l\'humidité',
