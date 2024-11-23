@@ -1,0 +1,9 @@
+<div class="moyenne1">
+  <div>10:00</div>
+
+  <!-- Afficher la température si disponible, sinon des pointillés -->
+  <div>{{ temperature !== null ? temperature + ' °C' : '... C' }}</div>
+
+  <!-- Afficher l'humidité si disponible, sinon des pointillés -->
+  <div>{{ humidity !== null ? humidity + '%' : '... %' }}</div>
+</div>

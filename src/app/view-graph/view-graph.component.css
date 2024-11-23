@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .graph-container {
+    width: 100%;
+    max-width: 800px;
+    padding-right: 100% ;
+    height: 750px; /* Hauteur augmentée pour le rendre plus grand */
+  }
