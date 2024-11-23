@@ -10,6 +10,7 @@ import { MessageService } from '../message.service'; // Importation du service p
 @Component({
     selector: 'app-user-edit',
     imports: [CommonModule, FormsModule, RouterModule],
+    standalone: true,
     templateUrl: './edit-users.component.html',
     styleUrls: ['./edit-users.component.css']
 })

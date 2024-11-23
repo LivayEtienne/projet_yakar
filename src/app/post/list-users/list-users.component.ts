@@ -1,18 +1,21 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../user.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';  // Importation de FormsModule
 import { User } from '../users';
 import { ModalComponent } from '../../modal/modal.component';
 import { MessageService } from '../message.service';
 
+
 @Component({
     selector: 'app-list-users', // Indique que ce composant est autonome
+    standalone: true,  // Indique que ce composant est autonome
     imports: [CommonModule, RouterModule, FormsModule, ModalComponent], // Ajout de FormsModule ici
     templateUrl: './list-users.component.html',
     styleUrls: ['./list-users.component.css']
 })
+
 export class ListUsersComponent {
   users: User[] = []; // Liste des utilisateurs
   isLoading = true; // Indicateur de chargement
@@ -22,7 +25,7 @@ export class ListUsersComponent {
   currentPage: number = 1;
   itemsPerPage: number = 5;
 
-  constructor(private userService: UserService ,private messageService: MessageService ) {}
+  constructor(private userService: UserService ,private messageService: MessageService, private router: Router ) {}
 
   ngOnInit(): void {
     // Charger la liste des utilisateurs
@@ -131,6 +134,16 @@ export class ListUsersComponent {
         console.error('Erreur lors de la modification de l\'accès:', error);
       }
     );
+  }
+
+  redirectToListUsers() {
+    this.router.navigate(['/list-users']);
+  }
+  redirectToHistoric() {
+    this.router.navigate(['/historiques']);
+  }
+  redirectToDashboardAdmin() {
+    this.router.navigate(['/dashboard/admin']);
   }
   
 }

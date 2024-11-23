@@ -83,7 +83,7 @@
           <div class="form-row">
             <div class="form-group">
               <label>Mot de passe</label>
-              <input type="password" formControlName="password" placeholder="Mot de passe">
+              <input type="password" formControlName="password" placeholder="Mot de passe" >
               <small class="error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
                 Mot de passe requis.
               </small>

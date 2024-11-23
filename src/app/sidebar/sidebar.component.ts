@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar',
@@ -8,4 +9,16 @@ import { CommonModule } from '@angular/common';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css']
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+
+  constructor( private router: Router) {}
+  redirectToListUsers() {
+    this.router.navigate(['/list-users']);
+  }
+  redirectToHistoric() {
+    this.router.navigate(['/historiques']);
+  }
+  redirectToDashboardAdmin() {
+    this.router.navigate(['/dashboard/admin']);
+  }
+}

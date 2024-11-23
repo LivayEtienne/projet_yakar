@@ -12,11 +12,14 @@ import { Location } from '@angular/common'
     selector: 'app-create-user',
     templateUrl: './create-users.component.html',
     styleUrls: ['./create-users.component.css'],
-    imports: [CommonModule, ReactiveFormsModule]
+    imports: [CommonModule, ReactiveFormsModule],
+    standalone: true,
 })
 export class CreateUserComponent {
+
   userForm: FormGroup;
   currentStep: number = 1; // Variable pour suivre l'étape actuelle
+  passwordErrorMessage: string | null = null;
 
   constructor(private fb: FormBuilder, private userService: UserService,   private messageService: MessageService ,private location: Location, private router: Router) {
     this.userForm = this.fb.group({
@@ -24,8 +27,8 @@ export class CreateUserComponent {
       nom: ['', Validators.required],
       telephone: [null, [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
-      code: [null, Validators.required],
+      password: ['', Validators.required, Validators.minLength(8)],
+      code: ['null', Validators.required],
       role: ['user', Validators.required],
     });
   }
@@ -73,4 +76,14 @@ export class CreateUserComponent {
   goBack(): void {
     this.location.back();  // Utilise le service Location pour revenir à la page précédente
   }
+  
+  /*validatePasswordRealTime() {
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()])(.{8})$/;
+    const password = this.userForm.get('password')?.value;
+    if (!passwordRegex.test(password)) {
+      this.passwordErrorMessage = 'Le mot de passe doit contenir au moins une lettre majuscule, un chiffre et un caractère spécial.';
+    } else {
+      this.passwordErrorMessage = '';
+    }
+  }*/
 }

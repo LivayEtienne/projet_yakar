@@ -15,16 +15,14 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent ,  },
     { path: '', redirectTo: '/login', pathMatch: 'full' },
     { path: 'dashboard/admin', component: DashboardComponent, canActivate: [AuthGuard]},
+    { path: 'list-users', component: ListUsersComponent }, //liste de utilisateurs
+    { path: 'users/edit/:id', component: UserEditComponent },//modifier un utilisateur
+    { path: 'users/create', component: CreateUserComponent },//ajouter un utilisateur
+    { path: 'list', component: ListComponent }  // Route pour accéder à  ListComponent donnes pour les temperatures
 
   ];
   
-export const routes: Routes = [
-    // Routes de mon application
-  { path: 'list-users', component: ListUsersComponent }, //liste de utilisateurs
-  { path: 'users/edit/:id', component: UserEditComponent },//modifier un utilisateur
-  { path: 'users/create', component: CreateUserComponent },//ajouter un utilisateur
-  { path: 'list', component: ListComponent }  // Route pour accéder à  ListComponent donnes pour les temperatures
-];
+
 
 
 
