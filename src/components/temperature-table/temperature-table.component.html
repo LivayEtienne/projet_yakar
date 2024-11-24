@@ -1,0 +1,70 @@
+<!-- Bouton de redirection vers l'historique de la semaine -->
+<!-- Bouton de redirection vers l'historique de la semaine -->
+<div class="navigation-buttons">
+  <button (click)="navigateToWeekHistory()">Voir l'historique de la semaine</button>
+</div>
+
+<!-- temperature-table.component.html -->
+
+<div class="selected-data-container" *ngIf="selectedTemperature">
+  <h2>Température et humidité sélectionnées</h2>
+  <p class="temperature">Température : {{ selectedTemperature.temperature }}°C</p>
+  <p class="humidity">Humidité : {{ selectedTemperature.humidity }}%</p>
+
+  <div class="average-temperature">
+    <h3>Moyenne de la température</h3>
+    <p *ngIf="averageTemperature !== null" class="ng-if-available">
+      Moyenne pour la date {{ selectedTemperature.date | date: 'shortDate' }} : {{ averageTemperature }}°C
+    </p>
+    <p *ngIf="averageTemperature === null" class="ng-if-unavailable">
+      Aucune donnée disponible pour cette date.
+    </p>
+  </div>
+
+  <div class="average-humidity">
+    <h3>Moyenne de l'humidité</h3>
+    <p *ngIf="averageHumidity !== null" class="ng-if-available">
+      Moyenne pour la date {{ selectedTemperature.date | date: 'shortDate' }} : {{ averageHumidity }}%
+    </p>
+    <p *ngIf="averageHumidity === null" class="ng-if-unavailable">
+      Aucune donnée disponible pour cette date.
+    </p>
+  </div>
+
+  <div class="chart-container">
+    <h3>Graphique</h3>
+    <ngx-charts-pie-chart
+      [results]="[
+        { name: 'Température', value: selectedTemperature.temperature },
+        { name: 'Humidité', value: selectedTemperature.humidity }
+      ]"
+      [legend]="true"
+      [labels]="true"
+      [doughnut]="true">
+    </ngx-charts-pie-chart>
+  </div>
+</div>
+
+
+<div class="table-container">
+  <h2>Historique des températures et humidité par jour</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Heure</th>
+        <th>Date</th>
+        <th>Température (°C)</th>
+        <th>Humidité (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let temperature of temperatures" (click)="onRowClick(temperature)">
+        <!-- Afficher l'heure sous forme de 10h, 14h, 18h -->
+        <td>{{ temperature.date | date: 'HH:mm' }}</td>
+        <td>{{ temperature.date | date: 'shortDate' }}</td>
+        <td>{{ temperature.temperature }}</td>
+        <td>{{ temperature.humidity }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
