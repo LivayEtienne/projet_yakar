@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des Températures et Humidités</title>
+    <link rel="stylesheet" href="style.css"> <!-- Lien vers le fichier CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Historique des Températures et Humidités</h1>
+        <!-- Sélecteur de période pour filtrer les données -->
+    <div class="filter-options">
+        <select id="filter-period">
+            <option value="weekly">Semaine</option>
+            <option value="monthly">Mois</option>
+        </select>
+        <button onclick="filterData()">Filtrer</button>
+    </div>
+
+        <table id="historique-table">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Température (°C)</th>
+                    <th>Humidité (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Les lignes des données seront ajoutées ici -->
+            </tbody>
+        </table>
+        <div id="error-message" style="display:none; color: red;"></div> <!-- Message d'erreur -->
+    </div>
+
+    <!-- Section pour afficher la moyenne hebdomadaire -->
+<div class="weekly-average">
+    <h2>Moyenne Hebdomadaire</h2>
+    <table id="weekly-average-table">
+        <thead>
+            <tr>
+                <th>Semaine</th>
+                <th>Température Moyenne (°C)</th>
+                <th>Humidité Moyenne (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Les lignes des moyennes hebdomadaires seront ajoutées ici -->
+        </tbody>
+    </table>
+</div>
+
+    <script src="script.js"></script> <!-- Lien vers le fichier JS -->
+</body>
+</html>
