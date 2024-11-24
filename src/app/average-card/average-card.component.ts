@@ -11,25 +11,17 @@ import {ApiService}  from '../services/api.service';
   styleUrls: ['./average-card.component.css']
 })
 export class AverageCardComponent {
-  averageTemperature: number | null = null;
-  averageHumidity: number | null = null;
+  public averageTemperature: number | null = null;
+  public averageHumidity: number | null = null;
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.getDailyAverages();
-  }
-
-  // Récupérer les moyennes journalières
-  getDailyAverages(): void {
-    this.apiService.getMoyennes().subscribe(
-      (data) => {
-        this.averageTemperature = data.avgTemp;
-        this.averageHumidity = data.avgHumidity;
-      },
-      (error) => {
-        console.error('Erreur en récupérant les moyennes journalières:', error);
-      }
-    );
+    this.apiService.getMoyennesDuJour().subscribe((data) => {
+      this.averageTemperature = data.averageTemperature;
+      this.averageHumidity = data.averageHumidity;
+    }, (error) => {
+      console.error('Erreur lors de la récupération des moyennes:', error);
+    });
   }
 }

@@ -15,10 +15,10 @@ export class Moyenne2Component {
 
   ngOnInit(): void {
     this.apiService.getRelevesFixes().subscribe((releves) => {
-      const releve = releves.find(r => r.time);
-      if (releve) {
-        this.temperature = releve.temperature;
-        this.humidity = releve.humidity;
+      const releve14h = releves.find(releve => releve.time === '14:00');
+      if (releve14h) {
+        this.temperature = releve14h.temperature;
+        this.humidity = releve14h.humidity;
       }
     });
   }

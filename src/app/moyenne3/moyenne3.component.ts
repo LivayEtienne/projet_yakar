@@ -4,9 +4,8 @@ import { ApiService } from '../services/api.service';
 @Component({
   selector: 'app-moyenne3',
   standalone: true,
-  imports: [],
   templateUrl: './moyenne3.component.html',
-  styleUrl: './moyenne3.component.css'
+  styleUrls: ['./moyenne3.component.css']
 })
 export class Moyenne3Component {
   temperature: number | null = null;
@@ -16,12 +15,13 @@ export class Moyenne3Component {
 
   ngOnInit(): void {
     this.apiService.getRelevesFixes().subscribe((releves) => {
-      const releve = releves.find(r => r.time);
-      if (releve) {
-        this.temperature = releve.temperature;
-        this.humidity = releve.humidity;
+      // Recherche d'un relevé spécifique pour 17h
+      const releve17h = releves.find(releve => releve.time === '17:00'); // Utilisez 'time' ici
+      
+      if (releve17h) {
+        this.temperature = releve17h.temperature;
+        this.humidity = releve17h.humidity;
       }
     });
   }
-
 }

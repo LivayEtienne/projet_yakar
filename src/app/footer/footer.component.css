@@ -1,37 +1,37 @@
 .footer {
-    display: flex;
-    justify-content: flex-start; /* Aligne le contenu à gauche */
-    padding: 20px;
-    background-color: #f1f1f1; /* Couleur de fond du footer */
-  }
-  
-  .fan-container {
-    display: flex;
-    align-items: center; /* Centre verticalement le contenu */
-  }
-  
-  .fan-gif {
-    width: 50px; /* Ajustez la taille selon vos besoins */
-    height: auto; /* Garde les proportions */
-    margin-right: 10px; /* Espace entre le GIF et le bouton */
-  }
-  
-  button {
-    padding: 10px;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .green {
-    background-color: green; /* Couleur pour "Allumer" */
-  }
-  
-  .red {
-    background-color: red; /* Couleur pour "Éteindre" */
-  }
-  
-  button:hover {
-    opacity: 0.8; /* Légère opacité au survol */
-  }
+  display: flex;
+  justify-content: flex-start; /* Aligne le contenu à gauche */
+  padding: 20px;
+  background-color: #f1f1f1; /* Couleur de fond du footer */
+}
+
+.fan-container {
+  display: flex;
+  align-items: center; /* Centre verticalement le contenu */
+}
+
+.fan-gif {
+  width: 50px; /* Ajustez la taille selon vos besoins */
+  height: auto; /* Garde les proportions */
+  margin-right: 10px; /* Espace entre le GIF et le bouton */
+}
+
+button {
+  padding: 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.green {
+  background-color: green; /* Couleur pour "Allumer" */
+}
+
+.red {
+  background-color: red; /* Couleur pour "Éteindre" */
+}
+
+button:hover {
+  opacity: 0.8; /* Légère opacité au survol */
+}

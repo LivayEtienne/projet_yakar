@@ -9,7 +9,7 @@
     justify-content: space-between;
     text-align: center;
     width: 200px;
-    height: 90px;
+    height: 140px;
     margin: 0 1rem; /* Espace entre les cartes */
     transition: transform 0.3s, box-shadow 0.3s; /* Animation douce */
 }

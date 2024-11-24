@@ -11,15 +11,14 @@ import {ApiService}  from '../services/api.service';
 export class Moyenne1Component {
   temperature: number | null = null;
   humidity: number | null = null;
-
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.apiService.getRelevesFixes().subscribe((releves) => {
-      const releve = releves.find(r => r.time);
-      if (releve) {
-        this.temperature = releve.temperature;
-        this.humidity = releve.humidity;
+      const releve10h = releves.find(releve => releve.time === '10:00');
+      if (releve10h) {
+        this.temperature = releve10h.temperature;
+        this.humidity = releve10h.humidity;
       }
     });
   }
