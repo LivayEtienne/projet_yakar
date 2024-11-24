@@ -3,11 +3,11 @@ import { TemperatureService } from '../../services/temperature.service';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { Router } from '@angular/router';  // Import du Router
 import { RouterModule } from '@angular/router';
-
+import { SidebarComponent } from '../../app/sidebar/sidebar.component';
 @Component({
   selector: 'app-temperature-table',
   standalone: true,
-  imports: [NgxChartsModule, RouterModule],  // Ajoutez RouterModule ici
+  imports: [NgxChartsModule, RouterModule, SidebarComponent],  // Ajoutez RouterModule ici
   templateUrl: './temperature-table.component.html',
   styleUrls: ['./temperature-table.component.css'] 
 })

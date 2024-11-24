@@ -1,9 +1,13 @@
+
 <!-- Bouton de redirection vers l'historique de la semaine -->
 <!-- Bouton de redirection vers l'historique de la semaine -->
 <div class="navigation-buttons">
   <button (click)="navigateToWeekHistory()">Voir l'historique de la semaine</button>
 </div>
 
+<div class="mise">
+  <!-- Sidebar -->
+<app-sidebar></app-sidebar>
 <!-- temperature-table.component.html -->
 
 <div class="selected-data-container" *ngIf="selectedTemperature">
@@ -67,4 +71,5 @@
       </tr>
     </tbody>
   </table>
+</div>
 </div>

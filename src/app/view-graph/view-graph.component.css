@@ -1,13 +1,17 @@
-.container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .graph-container {
-    width: 100%;
-    max-width: 800px;
-    padding-right: 100% ;
-    height: 750px; /* Hauteur augmentée pour le rendre plus grand */
-  }
+.graph-container {
+  width: 100%; /* Utiliser toute la largeur disponible */
+  max-width: 900px; /* Fixer une largeur maximale pour éviter que le graphique devienne trop grand */
+  height: 500px; /* Ajuster la hauteur pour qu'il soit plus équilibré */
+  margin: 0 auto; /* Centrer le graphique horizontalement */
+  padding: 20px; /* Ajouter du padding autour du graphique */
+  box-sizing: border-box; /* Assurer que les padding et bordures sont inclus dans la taille totale */
+  border-radius: 8px; /* Ajouter un arrondi aux coins pour un aspect plus doux */
+  background-color: #ffffff; /* Ajouter un fond blanc pour faire ressortir le graphique */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajouter une légère ombre portée pour l'effet de profondeur */
+}
+
+/* Optionnel: ajuster le conteneur Highcharts pour qu'il s'adapte correctement */
+#container {
+  width: 100%;
+  height: 100%;
+}
