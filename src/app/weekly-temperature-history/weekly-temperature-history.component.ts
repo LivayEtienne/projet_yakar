@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { TemperatureService } from '../services/temperature.service';
+import { TemperatureService } from '../../services/temperature.service';
 import { Router } from '@angular/router';  // Import du Router
 import { RouterModule } from '@angular/router';
 

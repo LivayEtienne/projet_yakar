@@ -29,18 +29,29 @@ export class ApiService {
   getRealTimeHumidity(): Observable<any> {
     return this.http.get(`${this.apiUrl}/real-time/humidity`);
   }
+  getHistoriqueHebdomadaire(): Observable<{ date: string; temperature: number; humidity: number }[]> {
+    return this.http.get<{ message: string; data: { date: string; temperature: number; humidity: number }[] }>(`${this.apiUrl}/historique/hebdomadaire`).pipe(
+      map(response => response.data) // Assurez-vous de renvoyer uniquement 'data'
+    );
+  }
+  getMoyennesDuJour(): Observable<{ averageTemperature: number; averageHumidity: number }> {
+    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes/jour`).pipe(
+      map(response => ({
+        averageTemperature: response.averageTemperature,
+        averageHumidity: response.averageHumidity,
+      }))
+    );
+  }
 
-  // Récupérer les relevés à des heures fixes
   getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
-    return this.http.get<{ time: string, temperature: number, humidity: number }[]>(`${this.apiUrl}/releves`).pipe(
-      map(data => [
-        /*{ time1: '10:00', ...data[0] },
-        { time2: '14:00', ...data[1] },
-        { time3: '17:00', ...data[2] }*/
-        { time1: '10:00', ...data[0] },
-        { time2: '14:00', ...data[1] },
-        { time3: '17:00', ...data[2] }
-      ])
+    return this.http.get<{ message: string; data: { timestamp: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
+      map(response => {
+        return response.data.map((item, index) => ({
+          time: index === 0 ? '17:00' : index === 1 ? '14:00' : '10:00',
+          temperature: item.temperature,
+          humidity: item.humidity,
+        }));
+      })
     );
   }
 }

@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Connexion au WebSocket
-    this.webSocketService.connect('ws://localhost:8000/');
+    this.webSocketService.connect('ws://localhost:4000/');
 
     // Écoute des données reçues
     this.webSocketService.getData().subscribe({
