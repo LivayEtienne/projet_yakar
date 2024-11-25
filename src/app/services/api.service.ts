@@ -46,12 +46,13 @@ export class ApiService {
   getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
     return this.http.get<{ message: string; data: { timestamp: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
       map(response => {
+        const times = ['10:00', '14:00', '17:00']; // Horaires fixes
         return response.data.map((item, index) => ({
-          time: index === 0 ? '17:00' : index === 1 ? '14:00' : '10:00',
+          time: times[index] || 'N/A', // Associer les horaires fixes
           temperature: item.temperature,
           humidity: item.humidity,
         }));
       })
     );
   }
-}
+  }

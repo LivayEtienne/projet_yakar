@@ -70,27 +70,35 @@ async function saveData() {
 // Configuration du cron pour enregistrer les données à 10h, 14h et 17h tous les jours
 cron.schedule('0 10,14,17 * * *', () => {
   console.log('Enregistrement des données à', new Date());
-  saveData();
+  saveData(); // Fonction que vous avez déjà pour enregistrer les mesures
 });
+
 // Route pour obtenir les relevés à des heures fixes
 app.get('/api/mesures/specific-times', async (req, res) => {
   try {
-    const mesures = await MesureModel.find().sort({ timestamp: -1 });
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Début du jour actuel
+
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1); // Début du jour suivant
+
+    const mesures = await MesureModel.find({
+      timestamp: { $gte: today, $lt: tomorrow },
+    }).sort({ timestamp: 1 });
 
     // Filtrer les mesures pour obtenir celles à 10h, 14h et 17h
-    const filteredMesures = mesures.filter(mesure => {
-      const mesureDate = new Date(mesure.timestamp);
-      const mesureHeur = mesureDate.getHours();
-      const mesureMin = mesureDate.getMinutes();
-      return (mesureHeur === 10 && mesureMin === 0) || 
-             (mesureHeur === 14 && mesureMin === 0) || 
-             (mesureHeur === 17 && mesureMin === 0);
-    });
+    const fixedHours = [10, 14, 17];
+    const filteredMesures = fixedHours.map(hour => {
+      return mesures.find(mesure => {
+        const mesureDate = new Date(mesure.timestamp);
+        return mesureDate.getHours() === hour && mesureDate.getMinutes() === 0;
+      });
+    }).filter(Boolean); // Retirer les valeurs `undefined` si aucune mesure n'existe pour une heure donnée
 
     const response = filteredMesures.map(mesure => ({
       temperature: mesure.temperature,
       humidity: mesure.humidity,
-      timestamp: mesure.timestamp, // Ou tout autre format que vous souhaitez
+      timestamp: mesure.timestamp,
     }));
 
     res.json({
