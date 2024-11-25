@@ -1,73 +1,68 @@
 .temperature-card {
-    background: linear-gradient(145deg, #c92c2c, #9F1E1E); /* Dégradé pour un effet dynamique */
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Ombre douce derrière la carte */
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    text-align: center;
-    width: 200px;
-    height: 140px;
-    margin: 0 1rem; /* Espace entre les cartes */
-    transition: transform 0.3s, box-shadow 0.3s; /* Animation douce */
+  background: linear-gradient(145deg, #2a2a2a, #1e1e1e); /* Fond par défaut (identique à humidité) */
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Ombre douce */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  width: 200px; /* Identique à humidité */
+  height: 140px; /* Identique à humidité */
+  margin: 0 1rem;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+/* État chaud */
+.temperature-card.hot {
+  background: linear-gradient(145deg, #8b0000, #ff0000);
+}
+
+/* État froid */
+.temperature-card.cold {
+  background: linear-gradient(145deg, #030303, #020202);
 }
 
 /* Effet de survol */
 .temperature-card:hover {
-    transform: translateY(-5px); /* Légère élévation de la carte au survol */
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); /* Ombre plus prononcée */
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
 }
 
-/* Styles pour le titre */
-.temperature-card h2 {
-    font-size: 1.5rem;
-    margin: 0;
-    font-weight: bold;
-}
-
-/* Styles pour le contenu */
-.temperature-card p {
-    flex-grow: 1; /* Permet au texte de prendre l'espace disponible */
-    font-size: 1rem;
-    margin: 10px 0; /* Espace autour du texte */
-}
-
-/* Styles pour les icônes (optionnel) */
-.temperature-card .icon {
-    font-size: 2rem; /* Taille de l'icône */
-    margin-bottom: 10px; /* Espace sous l'icône */
-    color: #ffd700; /* Couleur de l'icône, par exemple un jaune doré */
-}
+/* Texte et disposition */
 .text-container {
-    flex-grow: 1;
-    text-align: right;
-    font-size: 1rem;
-    margin: 10px 0;
-  }
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Conteneur du cercle */
 .circular-progress {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 5px;
-  }
-  
-  .progress-ring__circle {
-    stroke-dasharray: 251.2, 251.2;
-    stroke-dashoffset: 251.2;
-    animation: progress-ring 1s ease-out forwards;
-  }
-  
-  @keyframes progress-ring {
-    from { stroke-dashoffset: 251.2; }
-    to { stroke-dashoffset: 63.2; }
-  }
-  
-  .progress-value {
-    position: absolute;
-    font-size: 24px;
-    font-weight: bold;
-  }
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+}
+
+/* Cercle SVG */
+.progress-ring__circle {
+  stroke-dasharray: 251.2, 251.2;
+  stroke-dashoffset: 251.2;
+  animation: progress-ring 1s ease-out forwards;
+}
+
+/* Animation du cercle */
+@keyframes progress-ring {
+  from { stroke-dashoffset: 251.2; }
+  to { stroke-dashoffset: 63.2; }
+}
+
+/* Valeur affichée au centre */
+.progress-value {
+  position: absolute;
+  font-size: 20px;
+  font-weight: bold;
+}
