@@ -2,6 +2,7 @@
 <div class="navigation-button">
   <button (click)="navigateToTemperatureTable()">Voir le tableau des températures</button>
 </div>
+
 <div>
   <h1>Historique hebdomadaire des températures et humidités</h1>
 
@@ -12,28 +13,31 @@
   <div *ngIf="isLoading" class="loading">Chargement des données...</div>
 
   <!-- Tableau des données hebdomadaires -->
-  <table *ngIf="!isLoading && weeklyData.length > 0">
+  <table *ngIf="!isLoading && weeklyData.length >= 0">
     <thead>
       <tr>
         <th>Propriété</th>
-        <th *ngFor="let day of weeklyData">{{ day.day }}</th>
+        <!-- Affichage des jours de la semaine -->
+        <th *ngFor="let day of daysOfWeek">{{ day }}</th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td>Date</td>
-        <td *ngFor="let day of weeklyData">{{ day.date | date: 'dd/MM/yy' }}</td>
+        <td *ngFor="let day of daysOfWeek; let i = index">
+          {{ weeklyData[i]?.date | date: 'dd/MM/yy' }}
+        </td>
       </tr>
       <tr>
         <td>Température moyenne (°C)</td>
-        <td *ngFor="let day of weeklyData" (click)="onDayClick(day)">
-          {{ day.averageTemperature ? (day.averageTemperature | number : '1.2-2') : 'Aucune donnée' }}
+        <td *ngFor="let day of daysOfWeek; let i = index" (click)="onDayClick(weeklyData[i])">
+          {{ weeklyData[i]?.averageTemperature ? (weeklyData[i].averageTemperature | number : '1.2-2') : 'Aucune donnée' }}
         </td>
       </tr>
       <tr>
         <td>Humidité moyenne (%)</td>
-        <td *ngFor="let day of weeklyData" (click)="onDayClick(day)">
-          {{ day.averageHumidity ? (day.averageHumidity | number : '1.2-2') : 'Aucune donnée' }}
+        <td *ngFor="let day of daysOfWeek; let i = index" (click)="onDayClick(weeklyData[i])">
+          {{ weeklyData[i]?.averageHumidity ? (weeklyData[i].averageHumidity | number : '1.2-2') : 'Aucune donnée' }}
         </td>
       </tr>
     </tbody>
@@ -46,11 +50,11 @@
       ({{ selectedDayData.date | date: 'dd/MM/yy' }})
     </h3>
     <ngx-charts-pie-chart
-    [results]="chartData"
-    [legend]="true"
-    [labels]="true"
-    [doughnut]="true"
-    [view]="[400, 300]"> <!-- Fixe la largeur et la hauteur -->
+      [results]="chartData"
+      [legend]="true"
+      [labels]="true"
+      [doughnut]="true"
+      [view]="[400, 300]"> <!-- Fixe la largeur et la hauteur -->
     </ngx-charts-pie-chart>
   </div>
 

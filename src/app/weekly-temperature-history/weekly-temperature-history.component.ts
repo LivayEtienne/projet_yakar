@@ -18,6 +18,7 @@ export class WeeklyTemperatureHistoryComponent implements OnInit {
   chartData: { name: string; value: number }[] = []; // Données pour le graphique
   isLoading = true; // Indicateur de chargement
   errorMessage = ''; // Message d'erreur
+  daysOfWeek: string[] = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']; // Jours de la semaine
 
   constructor(
     private temperatureService: TemperatureService,

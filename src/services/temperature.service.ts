@@ -22,6 +22,6 @@ export class TemperatureService {
   
  // Méthode pour obtenir l'historique des températures pour la semaine
  getWeekHistory(): Observable<any[]> {
-  return this.http.get<any[]>(`${this.baseUrl}/week-history`);
+  return this.http.get<any[]>(`${this.baseUrl}/temperatures/historique-semaine`);
 }
 }

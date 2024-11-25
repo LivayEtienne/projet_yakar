@@ -27,7 +27,7 @@ export class CreateUserComponent {
       nom: ['', Validators.required],
       telephone: [null, [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['', Validators.required, Validators.minLength(8)],
       code: ['null', Validators.required],
       role: ['user', Validators.required],
     });
@@ -37,7 +37,7 @@ export class CreateUserComponent {
   nextStep() {
     if (this.currentStep === 1 && this.userForm.get('prenom')?.valid && this.userForm.get('nom')?.valid) {
       this.currentStep++;
-      console.log(this.currentStep);
+       console.log(this.currentStep);
     } else if (this.currentStep === 2 && this.userForm.get('telephone')?.valid && this.userForm.get('email')?.valid) {
       this.currentStep++;
       console.log(this.currentStep);
