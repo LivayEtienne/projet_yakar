@@ -1,55 +1,73 @@
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 import { isPlatformBrowser } from '@angular/common';
-import { Observable, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
-export class WebSocketService {
-  private socket: WebSocket | null = null;
-  private subject = new Subject<any>();
-  private isBrowser: boolean;
+export class WebsocketService {
+  /*private sensorSocket$: WebSocketSubject<any> | null = null;
+  private keypadSocket$: WebSocketSubject<any> | null = null;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    // Vérifiez si nous sommes dans un navigateur
-    this.isBrowser = isPlatformBrowser(this.platformId);
-  }
+    if (isPlatformBrowser(this.platformId)) {
+      // Connect to WebSocket for sensor data
+      this.sensorSocket$ = webSocket('ws://localhost:4000/sensor');
 
-  connect(url: string): void {
-    // N'établissez une connexion WebSocket que si vous êtes dans un navigateur
-    if (!this.isBrowser) {
-      console.error('WebSocket n\'est pas disponible dans cet environnement (non-navigateur).');
-      return;
+      // Connect to WebSocket for keypad data
+      this.keypadSocket$ = webSocket('ws://localhost:4000/keypad');
+    } else {
+      console.warn('WebSockets not initialized: Running in a non-browser environment');
     }
-
-    // Initialisez la connexion WebSocket
-    this.socket = new WebSocket(url);
-
-    this.socket.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      this.subject.next(data); // Diffuser les données reçues
-    };
-
-    this.socket.onerror = (error) => {
-      console.error('Erreur WebSocket :', error);
-    };
-
-    this.socket.onclose = () => {
-      console.log('Connexion WebSocket fermée.');
-    };
   }
 
-  // Observable pour écouter les données
-  getData(): Observable<any> {
-    return this.subject.asObservable();
+  // Listen to sensor data
+  listenToSensorData(): Observable<any> {
+    return this.sensorSocket$ ? this.sensorSocket$.asObservable() : of(null);
   }
 
-  // Déconnecter proprement
-  disconnect(): void {
-    if (this.socket) {
-      this.socket.close();
+  // Listen to keypad data
+  listenToKeypadData(): Observable<any> {
+    return this.keypadSocket$ ? this.keypadSocket$.asObservable() : of(null);
+  }
+
+  // Send commands to control ventilation
+  controlVentilation(state: boolean): void {
+    if (this.sensorSocket$) {
+      const command = state ? 'VENT:ON' : 'VENT:OFF';
+      this.sensorSocket$.next({ command });
+    } else {
+      console.warn('Cannot send command: WebSocket connection is not available');
     }
-    this.socket = null;
+  }
+
+  // Close WebSocket connections
+  closeConnections(): void {
+    this.sensorSocket$?.complete();
+    this.keypadSocket$?.complete();
+  }*/
+
+    private socket$: any;
+  private socketUrl: string = 'ws://localhost:8080'; // URL du serveur WebSocket (Node.js)
+
+  constructor() {
+    // Initialiser la connexion WebSocket
+    this.socket$ = webSocket(this.socketUrl);
+  }
+
+  // Méthode pour écouter les messages du serveur WebSocket
+  getMessages(): Observable<any> {
+    return this.socket$;
+  }
+
+  // Méthode pour envoyer des messages au serveur WebSocket
+  sendMessage(message: any): void {
+    this.socket$.next(message);
+  }
+
+  // Méthode pour fermer la connexion WebSocket
+  closeConnection(): void {
+    this.socket$.complete();
   }
 }
-

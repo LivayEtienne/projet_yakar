@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import { ApiService } from '../services/api.service';
+import { WebsocketService } from '../web-socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-view-graph',
@@ -11,26 +12,36 @@ import { ApiService } from '../services/api.service';
 export class ViewGraphComponent implements OnInit {
   public options: any;
   private chart: Highcharts.Chart | null = null;
+  public sensorData: { temperature: number; humidity: number } = { temperature: 0, humidity: 0 };
+  private socketSubscription: Subscription | undefined;
 
-  constructor(private apiService: ApiService) {}
+  constructor(private webSocketService: WebsocketService) {}
 
   ngOnInit(): void {
     // Initialiser le graphique avec des données fictives
     this.initializeGraph();
 
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
+      if (message.type === 'sensor') {
+        this.sensorData.temperature = message.temperature;
+        this.sensorData.humidity = message.humidity;
+      }
+    });
     // Mettre à jour les données en temps réel toutes les 5 secondes
-    setInterval(() => this.updateRealTimeData(), 5000);
+    setInterval(() => this.updateRealTimeData(), 10000);
   }
 
   initializeGraph(): void {
     const categories = ['1', '2', '3', '4', '5']; // Points initiaux fictifs
     const tempData = [22, 24, 21, 23, 25]; // Températures fictives
     const humData = [45, 50, 48, 55, 60]; // Humidité fictive
+    //const tempData = this.sensorData.temperature;
+   // const humData = this.sensorData.humidity ;
 
     this.options = {
       chart: {
         type: 'line',
-        width: 810,
+        width: 700,
       },
       title: {
         text: 'Température et humidité en temps réel',
@@ -70,33 +81,27 @@ export class ViewGraphComponent implements OnInit {
   updateRealTimeData(): void {
     if (!this.chart) return;
 
-    // Récupérer les données de température
-    this.apiService.getRealTimeTemperature().subscribe(
-      (tempResponse) => {
-        const temperature = tempResponse.temperature;
-        const timestamp = tempResponse.timestamp;
-
-        // Mettre à jour la série de température
-        const tempSeries = this.chart?.series[0];
-        tempSeries?.addPoint(temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération de la température:', error);
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
+      if (message.type === 'sensor') {
+        this.sensorData.temperature = message.temperature;
+        this.sensorData.humidity = message.humidity;
       }
-    );
+      const tempSeries = this.chart?.series[0];
+      tempSeries?.addPoint(this.sensorData.temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points
 
-    // Récupérer les données d'humidité
-    this.apiService.getRealTimeHumidity().subscribe(
-      (humResponse) => {
-        const humidity = humResponse.humidity;
-
-        // Mettre à jour la série d'humidité
-        const humSeries = this.chart?.series[1];
-        humSeries?.addPoint(humidity, true, humSeries.data.length >= 10); // Garde un historique de 10 points
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération de l\'humidité:', error);
-      }
-    );
+       // Mettre à jour la série d'humidité
+       const humSeries = this.chart?.series[1];
+       humSeries?.addPoint(this.sensorData.humidity, true, humSeries.data.length >= 10); // Garde un historique de 10 points
+    });
   }
-}
+  
+
+  ngOnDestroy(): void {
+    // Se désabonner lors de la destruction du composant
+    if (this.socketSubscription) {
+      this.socketSubscription.unsubscribe();
+    }
+    this.webSocketService.closeConnection();
+  }
+    
+  }

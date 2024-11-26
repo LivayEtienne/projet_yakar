@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {ApiService}  from '../services/api.service';
+import { WebsocketService } from '../web-socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-humidity-card',
@@ -13,23 +14,32 @@ export class HumidityCardComponent {
   humidity: number = 40;
   progress: number = 89;
   timestamp: Date | null = null;
-  constructor(private apiService: ApiService) {}
+  private socketSubscription: Subscription | undefined;
+
+
+  constructor(private webSocketService: WebsocketService) {}
   ngOnInit(): void {
     this.getRealTimeHumidity();
   
   }
   
   getRealTimeHumidity() {
-    this.apiService.getRealTimeHumidity().subscribe(
-      (data) => {
-        this.humidity = data.humidity;
-        this.timestamp = new Date(data.timestamp);
-        console.log('Humidité en temps réel:', data);
-      },
-      (error) => {
-        console.error('Erreur en récupérant l\'humidité en temps réel:', error);
+    
+
+    // Écoute des données reçues
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
+      if (message.type === 'sensor') {
+        this.humidity = message.humidity;
       }
-    );
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Se désabonner lors de la destruction du composant
+    if (this.socketSubscription) {
+      this.socketSubscription.unsubscribe();
+    }
+    this.webSocketService.closeConnection();
   }
 }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import axios from 'axios';
 import { CommonModule } from '@angular/common'; // Import du CommonModule pour ngClass
+import { WebsocketService } from '../web-socket.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-temperature',
@@ -11,20 +12,20 @@ import { CommonModule } from '@angular/common'; // Import du CommonModule pour n
 })
 export class TemperatureCardComponent {
   temperature: number | null = null; // Initialisation de la température
+  private socketSubscription: Subscription | undefined;
 
+  constructor(private webSocketService: WebsocketService) {}
   ngOnInit(): void {
     this.getTemperature(); // Récupération de la température au démarrage
   }
 
   // Récupérer la température depuis l'API
   getTemperature() {
-    axios.get('http://localhost:3000/api/real-time/temperature')
-      .then(response => {
-        this.temperature = response.data.temperature; // Mise à jour de la température
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération de la température', error);
-      });
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
+      if (message.type === 'sensor') {
+        this.temperature = message.temperature;
+      }
+    });
   }
 
   // Calculer l'offset pour le cercle SVG basé sur la température
@@ -37,5 +38,13 @@ export class TemperatureCardComponent {
   // Déterminer la classe CSS pour le fond en fonction de la température
   getTemperatureCardClass(): string {
     return this.temperature !== null && this.temperature > 27 ? 'hot' : 'normal';
+  }
+
+  ngOnDestroy(): void {
+    // Se désabonner lors de la destruction du composant
+    if (this.socketSubscription) {
+      this.socketSubscription.unsubscribe();
+    }
+    this.webSocketService.closeConnection();
   }
 }

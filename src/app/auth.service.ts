@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -15,23 +16,17 @@ export class AuthService {
     return typeof window !== 'undefined' && typeof localStorage !== 'undefined';
   }
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient, private router: Router) {}
 
   login(email: string, password: string) {
     return this.http.post(`${this.apiUrl}/auth/login`, { email, password }).pipe(
-      catchError((error) => {
-        console.error('Erreur lors de la connexion :', error);
-        return throwError(() => new Error('Erreur de connexion.'));
-      })
+      catchError(this.handleError)
     );
   }
 
   loginWithCode(code: string) {
     return this.http.post(`${this.apiUrl}/auth/login`, { code }).pipe(
-      catchError((error) => {
-        console.error('Erreur lors de la connexion avec un code :', error);
-        return throwError(() => new Error('Erreur de connexion.'));
-      })
+      catchError(this.handleError)
     );
   }
 
@@ -42,12 +37,20 @@ export class AuthService {
     localStorage.setItem(this.tokenKey, token);
   }
 
+
   getToken(): string | null {
-    if (!this.isBrowser()) {
-      throw new Error('Cannot get token in a non-browser environment');
+    if (!isPlatformBrowser(this.platformId)) {
+      console.error('Token cannot be retrieved in a non-browser environment');
+      return null;
     }
     return localStorage.getItem(this.tokenKey);
   }
+
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    return token !== null;
+  }
+  
 
   logout(): void {
     if (!this.isBrowser()) {
@@ -62,8 +65,19 @@ export class AuthService {
       error: (err) => console.error('Erreur lors de la déconnexion :', err)
     });
   }
+  private handleError(error: HttpErrorResponse) {
+    // Log l'erreur complète dans la console pour le débogage
+    console.error('Erreur lors de la connexion:', error);
 
-  isAuthenticated(): boolean {
-    return !!this.getToken();
+    // Vérifier si l'erreur est une 401 (Unauthorized)
+    if (error.status === 401) {
+      // Si l'erreur contient un message dans `error.error.msg`, on peut y accéder comme ceci
+      const errorMsg = error.error?.msg || 'Une erreur inconnue est survenue';
+      return throwError(errorMsg); // On renvoie le message d'erreur
+    }
+
+    // Pour d'autres erreurs, on retourne une erreur générique
+    return throwError('Erreur de connexion, veuillez réessayer plus tard.');
   }
+
 }

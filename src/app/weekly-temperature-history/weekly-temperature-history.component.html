@@ -3,59 +3,64 @@
   <button (click)="navigateToTemperatureTable()">Voir le tableau des températures</button>
 </div>
 
-<div>
-  <h1>Historique hebdomadaire des températures et humidités</h1>
-
-  <!-- Affichage du message d'erreur -->
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
-  <!-- Indicateur de chargement -->
-  <div *ngIf="isLoading" class="loading">Chargement des données...</div>
-
-  <!-- Tableau des données hebdomadaires -->
-  <table *ngIf="!isLoading && weeklyData.length >= 0">
-    <thead>
-      <tr>
-        <th>Propriété</th>
-        <!-- Affichage des jours de la semaine -->
-        <th *ngFor="let day of daysOfWeek">{{ day }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Date</td>
-        <td *ngFor="let day of daysOfWeek; let i = index">
-          {{ weeklyData[i]?.date | date: 'dd/MM/yy' }}
-        </td>
-      </tr>
-      <tr>
-        <td>Température moyenne (°C)</td>
-        <td *ngFor="let day of daysOfWeek; let i = index" (click)="onDayClick(weeklyData[i])">
-          {{ weeklyData[i]?.averageTemperature ? (weeklyData[i].averageTemperature | number : '1.2-2') : 'Aucune donnée' }}
-        </td>
-      </tr>
-      <tr>
-        <td>Humidité moyenne (%)</td>
-        <td *ngFor="let day of daysOfWeek; let i = index" (click)="onDayClick(weeklyData[i])">
-          {{ weeklyData[i]?.averageHumidity ? (weeklyData[i].averageHumidity | number : '1.2-2') : 'Aucune donnée' }}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- Graphique des données -->
-  <div *ngIf="selectedDayData">
-    <h3>
-      Graphique des données pour {{ selectedDayData.day }}
-      ({{ selectedDayData.date | date: 'dd/MM/yy' }})
-    </h3>
-    <ngx-charts-pie-chart
-      [results]="chartData"
-      [legend]="true"
-      [labels]="true"
-      [doughnut]="true"
-      [view]="[400, 300]"> <!-- Fixe la largeur et la hauteur -->
-    </ngx-charts-pie-chart>
-  </div>
-
+<div class="disp">
+   <!-- Sidebar -->
+ <app-sidebar></app-sidebar>
+ <div>
+   <h1>Historique hebdomadaire des températures et humidités</h1>
+ 
+   <!-- Affichage du message d'erreur -->
+   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+ 
+   <!-- Indicateur de chargement -->
+   <div *ngIf="isLoading" class="loading">Chargement des données...</div>
+ 
+   <!-- Tableau des données hebdomadaires -->
+   <table *ngIf="!isLoading && weeklyData.length >= 0">
+     <thead>
+       <tr>
+         <th>Propriété</th>
+         <!-- Affichage des jours de la semaine -->
+         <th *ngFor="let day of daysOfWeek">{{ day }}</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td>Date</td>
+         <td *ngFor="let day of daysOfWeek; let i = index">
+           {{ weeklyData[i]?.date | date: 'dd/MM/yy' }}
+         </td>
+       </tr>
+       <tr>
+         <td>Température moyenne (°C)</td>
+         <td *ngFor="let day of daysOfWeek; let i = index" (click)="onDayClick(weeklyData[i])">
+           {{ weeklyData[i]?.averageTemperature ? (weeklyData[i].averageTemperature | number : '1.2-2') : 'Aucune donnée' }}
+         </td>
+       </tr>
+       <tr>
+         <td>Humidité moyenne (%)</td>
+         <td *ngFor="let day of daysOfWeek; let i = index" (click)="onDayClick(weeklyData[i])">
+           {{ weeklyData[i]?.averageHumidity ? (weeklyData[i].averageHumidity | number : '1.2-2') : 'Aucune donnée' }}
+         </td>
+       </tr>
+     </tbody>
+   </table>
+ 
+   <!-- Graphique des données -->
+   <div *ngIf="selectedDayData">
+     <h3>
+       Graphique des données pour {{ selectedDayData.day }}
+       ({{ selectedDayData.date | date: 'dd/MM/yy' }})
+     </h3>
+     <ngx-charts-pie-chart
+       [results]="chartData"
+       [legend]="true"
+       [labels]="true"
+       [doughnut]="true"
+       [view]="[400, 300]"> <!-- Fixe la largeur et la hauteur -->
+     </ngx-charts-pie-chart>
+   </div>
+ 
+ </div>
+ 
 </div>

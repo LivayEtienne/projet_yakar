@@ -43,15 +43,5 @@ export class ApiService {
     );
   }
 
-  getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
-    return this.http.get<{ message: string; data: { timestamp: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
-      map(response => {
-        return response.data.map((item, index) => ({
-          time: index === 0 ? '17:00' : index === 1 ? '14:00' : '10:00',
-          temperature: item.temperature,
-          humidity: item.humidity,
-        }));
-      })
-    );
-  }
+
 }

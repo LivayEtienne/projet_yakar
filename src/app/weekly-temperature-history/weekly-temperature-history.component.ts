@@ -4,11 +4,12 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { TemperatureService } from '../../services/temperature.service';
 import { Router } from '@angular/router';  // Import du Router
 import { RouterModule } from '@angular/router';
+import { SidebarComponent } from '../sidebar/sidebar.component';
 
 @Component({
   selector: 'app-weekly-temperature-history',
   standalone: true,
-  imports: [CommonModule, NgxChartsModule, RouterModule],
+  imports: [CommonModule, NgxChartsModule, RouterModule, SidebarComponent],
   templateUrl: './weekly-temperature-history.component.html',
   styleUrls: ['./weekly-temperature-history.component.css'],
 })

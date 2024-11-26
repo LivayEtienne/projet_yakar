@@ -2,8 +2,9 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { WebSocketService } from '../web-socket.service';
+import { WebsocketService } from '../web-socket.service';
 import { CommonModule } from '@angular/common';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -26,17 +27,18 @@ export class LoginComponent implements OnInit, OnDestroy {
   currentIndex = 0; // Index actif
   showModal = false;
   loginForm: FormGroup;
+
   errorMessage: string | null = null;
   errorMessageCode: string | null = null;
   codeForm: any;
   incorrectAttempts = 0; // Compteur de tentatives incorrectes
   maxAttempts = 3; // Limite des tentatives
-
+  private socketSubscription: Subscription | undefined;
   constructor(
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private webSocketService: WebSocketService
+    private webSocketService: WebsocketService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -45,17 +47,16 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Connexion au WebSocket
-    this.webSocketService.connect('ws://localhost:4000/');
+   
 
     // Écoute des données reçues
-    this.webSocketService.getData().subscribe({
-      next: (data) => {
-        const char = data.keypadCode;
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
+      if (message.type === 'keypad') {
+        const char = message.value;
+        console.log(message.value);
         this.showModal = true;
         this.addCharacterToCode(char);
-      },
-      error: (err) => console.error('Erreur WebSocket :', err),
+      }
     });
   }
 
@@ -88,9 +89,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
   
 
-  ngOnDestroy(): void {
-    this.webSocketService.disconnect();
-  }
 
   /**
    * Gestion de l'entrée utilisateur pour les champs masqués.
@@ -182,8 +180,10 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.handleRedirection(res.role); // Redirection après connexion réussie
           },
           error: (err) => {
-            this.errorMessage = err.error?.msg || 'Une erreur inconnue est survenue.';
-          },
+            // Affiche le message d'erreur venant du backend
+            this.errorMessage = err;
+            //console.error('Erreur de connexion:', err);
+          }
         });
     }
   }
@@ -231,5 +231,13 @@ get showPassword() {
     } else {
       this.errorMessage = 'Rôle inconnu. Veuillez contacter un administrateur.';
     }
+  }
+
+  ngOnDestroy(): void {
+    // Se désabonner lors de la destruction du composant
+    if (this.socketSubscription) {
+      this.socketSubscription.unsubscribe();
+    }
+    this.webSocketService.closeConnection();
   }
 }

@@ -16,6 +16,7 @@
 .logo img {
   height: 50px; /* Adjusted logo size for better balance */
   width: auto; /* Let the logo keep its aspect ratio */
+  padding-right: 200%;
 }
 
 /* Menu styling */
