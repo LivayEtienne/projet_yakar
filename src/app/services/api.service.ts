@@ -42,6 +42,15 @@ export class ApiService {
       }))
     );
   }
+  getFanState(): Observable<{ state: boolean }> {
+    return this.http.get<{ state: boolean }>(`${this.apiUrl}/fan/state`);
+  }
+  
+  controlFan(state: boolean): Observable<any> {
+    return this.http.post(`${this.apiUrl}/fan/control`, { state });
+  }
+  
+  
 
   getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
     return this.http.get<{ message: string; data: { timestamp: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(

@@ -197,13 +197,54 @@ io.on('connection', (socket) => {
   console.log('Client connecté :', socket.id);
   
   socket.on('toggleFan', (status) => {
-    // Envoie la commande à Arduino pour allumer/éteindre le ventilateur
-    if (status === 'on') {
-        port.write('FAN_ON\n');
-    } else {
-        port.write('FAN_OFF\n');
-    }
+    
 });
+let fanState = false; // État initial du ventilateur (éteint)
+
+app.get('/api/fan/state', (req, res) => {
+  res.json({ state: fanState });
+});
+
+app.post('/api/fan/control', (req, res) => {
+  const { state } = req.body;
+  if (typeof state === 'boolean') {
+    fanState = state;
+    console.log(`Ventilateur ${state ? 'allumé' : 'éteint'}`);
+    res.status(200).json({ message: 'État du ventilateur mis à jour avec succès' });
+  } else {
+    res.status(400).json({ message: 'Donnée invalide' }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+    );
+  }
+});
+
+
 
   // Envoi immédiat des données actuelles au client nouvellement connecté
   if (currentData.temperature !== null && currentData.humidity !== null) {

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {ApiService}  from '../services/api.service';
 
 @Component({
   selector: 'app-footer',
@@ -7,17 +8,35 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-  isOn: boolean = false; // État du ventilateur
+  isOn: boolean = false; // État actuel du ventilateur
+  isDisabled: boolean = false; // État du bouton (désactivé ou non)
 
-  toggleFan() {
-    this.isOn = !this.isOn; // Change l'état du ventilateur
-    const command = this.isOn ? 'FAN_ON' : 'FAN_OFF';
-    this.sendCommandToArduino(command);
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    // Récupérer l'état initial du ventilateur depuis l'API
+    this.apiService.getFanState().subscribe({
+      next: (response) => {
+        this.isOn = response.state; // Met à jour l'état du ventilateur
+        this.isDisabled = response.state; // Désactive le bouton si le ventilateur est déjà allumé
+      },
+      error: (error) => {
+        console.error('Erreur lors de la récupération de l’état du ventilateur :', error);
+      }
+    });
   }
 
-  sendCommandToArduino(command: string) {
-    // Simulation de l'envoi d'une commande à Arduino
-    console.log(`Commande envoyée : ${command}`);
-    // Implémentez ici l'envoi de commande via WebSocket ou autre méthode
+  // Méthode pour allumer/éteindre le ventilateur
+  toggleFan(): void {
+    const newState = !this.isOn; // Calculer le nouvel état du ventilateur
+    this.apiService.controlFan(newState).subscribe({
+      next: () => {
+        this.isOn = newState; // Met à jour l'état local du ventilateur
+        this.isDisabled = newState; // Désactiver le bouton si le ventilateur est allumé
+      },
+      error: (error) => {
+        console.error('Erreur lors du contrôle du ventilateur :', error);
+      }
+    });
   }
 }
