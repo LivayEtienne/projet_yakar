@@ -1,0 +1,42 @@
+.average-card {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e); /* Dégradé pour un effet dynamique */
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Ombre douce derrière la carte */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    width: 200px; /* Taille ajustée pour être la même que les cartes de température et d'humidité */
+    height: 280px; /* Hauteur identique aux autres cartes */
+    margin: 0 1rem; /* Espace entre les cartes */
+    transition: transform 0.3s, box-shadow 0.3s; /* Animation douce */
+  }
+  
+  /* Effet de survol */
+  .average-card:hover {
+    transform: translateY(-5px); /* Légère élévation de la carte au survol */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); /* Ombre plus prononcée */
+  }
+  
+  /* Styles pour le titre */
+  .average-card h6 {
+    font-size: 1.2rem;
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  /* Styles pour le contenu */
+  .average-card p {
+    font-size: 1rem;
+    margin: 10px 0; /* Espacement autour du texte */
+  }
+  
+  /* Styles pour les icônes (optionnel) */
+  .average-card .icon {
+    font-size: 2rem; /* Taille de l'icône */
+    margin-bottom: 10px; /* Espace sous l'icône */
+    color: #ffcc00; /* Couleur de l'icône */
+  }
+  

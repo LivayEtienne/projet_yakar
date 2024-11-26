@@ -1,0 +1,58 @@
+.humidity-card {
+    background: linear-gradient(145deg, #2a2a2a, #1e1e1e); /* Dégradé pour un effet dynamique */
+    color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Ombre douce derrière la carte */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    width: 200px; /* Taille identique à celle de la carte de température */
+    height: 160px; /* Hauteur ajustée pour être la même que la température */
+    margin: 0 1rem; /* Espace entre les cartes */
+    transition: transform 0.3s, box-shadow 0.3s; /* Animation douce */
+  }
+  
+  /* Effet de survol */
+  .humidity-card:hover {
+    transform: translateY(-5px); /* Légère élévation de la carte au survol */
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4); /* Ombre plus prononcée */
+  }
+  
+  .text-container {
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .circular-progress {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px; /* Taille ajustée pour être plus petite mais proportionnelle */
+    height: 80px; /* Taille ajustée pour être plus petite mais proportionnelle */
+  }
+  
+  .progress-ring__circle {
+    stroke-dasharray: 251.2, 251.2;
+    stroke-dashoffset: 251.2;
+    animation: progress-ring 1s ease-out forwards;
+  }
+  
+  @keyframes progress-ring {
+    from { stroke-dashoffset: 251.2; }
+    to { stroke-dashoffset: 63.2; } /* Exemple d'animation, ajuster selon la valeur */
+  }
+  
+  .progress-value {
+    position: absolute;
+    font-size: 20px; /* Taille de texte ajustée pour correspondre */
+    font-weight: bold;
+  }
+  
+  .humidity-card .progress-ring__circle {
+    stroke: #00bfff; /* Couleur de l'humidité */
+  }
+  

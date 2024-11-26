@@ -1,0 +1,73 @@
+/* Header container with full-width navigation */
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Make sure the header takes the full width */
+  position: sticky; /* Makes the header sticky at the top */
+  top: 0;
+  z-index: 10; /* Ensures header stays on top when scrolling */
+}
+
+/* Logo styling */
+.logo img {
+  height: 50px; /* Adjusted logo size for better balance */
+  width: auto; /* Let the logo keep its aspect ratio */
+  padding-right: 200%;
+}
+
+/* Menu styling */
+.menu {
+  display: flex;
+  justify-content: flex-end; /* Aligns the menu to the right */
+  flex-grow: 1; /* Makes the menu take available space */
+}
+
+.menu ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu ul li {
+  margin: 0 20px; /* Increased spacing for better separation between items */
+}
+
+.menu ul li a {
+  text-decoration: none;
+  color: #333333;
+  font-weight: 600; /* Slightly lighter weight for a more elegant look */
+  font-size: 18px;
+  letter-spacing: 0.5px; /* Adds a slight spacing between letters */
+  transition: color 0.3s ease, transform 0.2s ease; /* Added smooth transition effect */
+}
+
+.menu ul li a:hover {
+  color: #227C70; /* Soft green color on hover */
+  transform: translateY(-2px); /* Slight lift effect on hover */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column; /* Stack the items vertically on smaller screens */
+    padding: 10px 20px;
+  }
+
+  .menu {
+    justify-content: center; /* Center the menu items when stacked */
+    width: 100%;
+  }
+
+  .menu ul li {
+    margin: 10px 0; /* Stack items vertically with margin for separation */
+  }
+
+  .logo img {
+    height: 40px; /* Reduce logo size on mobile */
+  }
+}

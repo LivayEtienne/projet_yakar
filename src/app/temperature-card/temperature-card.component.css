@@ -1,0 +1,68 @@
+.temperature-card {
+  background: linear-gradient(145deg, #2a2a2a, #1e1e1e); /* Fond par défaut (identique à humidité) */
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* Ombre douce */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  width: 200px; /* Identique à humidité */
+  height: 160px; /* Identique à humidité */
+  margin: 0 1rem;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+/* État chaud */
+.temperature-card.hot {
+  background: linear-gradient(145deg, #8b0000, #ff0000);
+}
+
+/* État froid */
+.temperature-card.cold {
+  background: linear-gradient(145deg, #030303, #020202);
+}
+
+/* Effet de survol */
+.temperature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Texte et disposition */
+.text-container {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Conteneur du cercle */
+.circular-progress {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+}
+
+/* Cercle SVG */
+.progress-ring__circle {
+  stroke-dasharray: 251.2, 251.2;
+  stroke-dashoffset: 251.2;
+  animation: progress-ring 1s ease-out forwards;
+}
+
+/* Animation du cercle */
+@keyframes progress-ring {
+  from { stroke-dashoffset: 251.2; }
+  to { stroke-dashoffset: 63.2; }
+}
+
+/* Valeur affichée au centre */
+.progress-value {
+  position: absolute;
+  font-size: 20px;
+  font-weight: bold;
+}
