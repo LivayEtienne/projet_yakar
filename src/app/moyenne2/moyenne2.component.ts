@@ -14,13 +14,13 @@ export class Moyenne2Component {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.apiService.getMoyennesDuJour().subscribe({
-      next: (rest : any) => {
-         this.temperature = rest.averageTemperature;
-         this.humidity = rest.averageHumidity;
-       }, error: (err) => {
-         console.error('Erreur lors de la récupération des données :', err);
-       }
- })};
+    this.apiService.getRelevesFixes().subscribe((releves) => {
+      const releve14h = releves.find(releve => releve.time === '14:00');
+      if (releve14h) {
+        this.temperature = releve14h.temperature;
+        this.humidity = releve14h.humidity;
+      }
+    });
+  }
   
 }

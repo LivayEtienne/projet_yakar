@@ -15,13 +15,15 @@ export class Moyenne3Component {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.apiService.getMoyennesDuJour().subscribe({
-     next: (rest : any) => {
-        this.temperature = rest.averageTemperature;
-        this.humidity = rest.averageHumidity;
-      }, error: (err) => {
-        console.error('Erreur lors de la récupération des données :', err);
+    this.apiService.getRelevesFixes().subscribe((releves) => {
+      // Recherche d'un relevé spécifique pour 17h
+      const releve17h = releves.find(releve => releve.time === '17:00'); // Utilisez 'time' ici
+
+      if (releve17h) {
+        this.temperature = releve17h.temperature;
+        this.humidity = releve17h.humidity;
       }
-})};
+    });
+  }
  
 }

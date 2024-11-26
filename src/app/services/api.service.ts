@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map, Observable } from 'rxjs';
+import { catchError, map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -35,11 +35,28 @@ export class ApiService {
     );
   }
   getMoyennesDuJour(): Observable<{ averageTemperature: number; averageHumidity: number }> {
-    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes/jour`).pipe(
+    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes`).pipe(
       map(response => ({
         averageTemperature: response.averageTemperature,
         averageHumidity: response.averageHumidity,
       }))
+    );
+  }
+
+  getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
+    return this.http.get<{ data: { temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
+      map(response => {
+        const times = ['10:00', '14:00', '17:00']; // Horaires fixes
+        return response.data.map((item, index) => ({
+          time: times[index] || 'N/A', // Associer les horaires fixes
+          temperature: item.temperature,
+          humidity: item.humidity,
+        })).filter(item => item.temperature !== undefined && item.humidity !== undefined); // Filtrer les valeurs non définies
+      }),
+      catchError(error => {
+        console.error('Erreur lors de la récupération des relevés :', error);
+        return of([]); // Retourner un tableau vide en cas d'erreur
+      })
     );
   }
 
