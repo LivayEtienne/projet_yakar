@@ -1,10 +1,13 @@
-<div class="moyenne-container">
-  <!-- Affichage des données pour chaque heure configurée -->
-  <div class="moyenne1" *ngFor="let heure of heuresConfig">
-    <div>{{ heure }}</div> <!-- Afficher l'heure -->
-    <div>
-      {{ releves[heure].temperature !== undefined ? releves[heure].temperature + ' °C' : '... °C' }}
-    </div>
-  </div>
-</div>
 
+
+<div class="moyenne1">
+  <div>10:00</div>
+
+  <!-- Afficher la température si disponible, sinon des pointillés -->
+  <div>{{ temperature !== null ? temperature + ' °C' : '... C' }}</div>
+
+  <!-- Afficher l'humidité si disponible, sinon des pointillés -->
+  <div>{{ humidity !== null ? humidity + '%' : '... %' }}</div>
+  
+  
+</div>
