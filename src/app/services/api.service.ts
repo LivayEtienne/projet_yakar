@@ -35,28 +35,44 @@ export class ApiService {
     );
   }
   getMoyennesDuJour(): Observable<{ averageTemperature: number; averageHumidity: number }> {
-    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes`).pipe(
+    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes/jour`).pipe(
       map(response => ({
         averageTemperature: response.averageTemperature,
         averageHumidity: response.averageHumidity,
       }))
     );
   }
-
-  getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
-    return this.http.get<{ data: { time: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
-      map(response => {
-        console.log('Données reçues:', response.data);
-        return response.data.filter(item => 
-          item.temperature !== null && item.humidity !== null
-        ); // Filtrer les relevés valides
-      }),
-      catchError(error => {
-        console.error('Erreur lors de la récupération des relevés :', error);
-        return of([]); // Retourner un tableau vide en cas d'erreur
-      })
-    );
+  
+  getFanState(): Observable<{ state: boolean }> {
+    return this.http.get<{ state: boolean }>(`${this.apiUrl}/state`);
   }
 
+  controlFan(state: boolean): Observable<any> {
+    return this.http.post(`${this.apiUrl}/control`, { state });
+  }
+  getConfiguredTimes(): Observable<{ hours: number[], minutes: number[] }> {
+    return this.http.get<{ hours: number[], minutes: number[] }>(`${this.apiUrl}/configure-times`);
+  }
+  
+  setConfiguredTimes(hours: number[], minutes: number[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/configure-times`, { hours, minutes });
+  }
+  
+  
 
+  getRelevesFixes(): Observable<{ time: string; temperature: number; humidity: number }[]> {
+    return this.http
+      .get<{ message: string; data: { timestamp: string; temperature: number; humidity: number }[] }>(
+        `${this.apiUrl}/mesures/specific-times`
+      )
+      .pipe(
+        map(response => {
+          return response.data.map(item => ({
+            time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format HH:MM
+            temperature: item.temperature,
+            humidity: item.humidity,
+          }));
+        })
+      );
+  }
 }
