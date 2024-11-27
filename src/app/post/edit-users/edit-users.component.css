@@ -24,7 +24,7 @@
   color: #000;
   position: relative;
   top: 50px;
-  left: 320px;
+  left: 10px;
 }
 
 .input-group {
@@ -103,4 +103,9 @@ input:focus {
   color: red;
   font-size: 0.9em;
   margin-top: 4px;
+}
+.alert{
+  position: absolute;
+  top: 75px;
+  right: 800px;
 }

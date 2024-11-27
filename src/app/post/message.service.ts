@@ -1,47 +1,34 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export interface Message {
-  type: 'success' | 'error' | 'info' | 'warning';
+  type: string;
   text: string;
-}
-
-export interface Confirmation {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
-  private messageSubject = new BehaviorSubject<Message | null>(null);
-  message$ = this.messageSubject.asObservable();
+  private messageSource = new BehaviorSubject<Message | null>(null);
+  message$ = this.messageSource.asObservable(); // Observable pour écouter les messages
 
-  private confirmSubject = new Subject<boolean>();
-  confirm$ = this.confirmSubject.asObservable();
+  private confirmationResponseSource = new BehaviorSubject<boolean | null>(null);
+  confirmationResponse$ = this.confirmationResponseSource.asObservable(); // Observable pour écouter les réponses de confirmation
 
-  showMessage(message: Message) {
-    this.messageSubject.next(message);
+  // Afficher un message
+  showMessage(message: Message): void {
+    this.messageSource.next(message);
   }
 
-  clearMessage() {
-    this.messageSubject.next(null);
+  // Effacer un message
+  clearMessage(): void {
+    this.messageSource.next(null);
+    // this.confirmationResponseSource.next(null);
   }
 
-  confirm(config: Confirmation): Observable<boolean> {
-    // Vous pouvez ici manipuler un flux d'Observable pour afficher un message dans la modale
-    this.showMessage({
-      type: 'info',
-      text: config.message,
-    });
-    return this.confirm$; // Vous renvoyez l'Observable pour que l'UI puisse y souscrire
-  }
-
-  respondToConfirm(response: boolean) {
-    this.confirmSubject.next(response); // Répondre à la confirmation
-    this.confirmSubject.complete(); // Compléter l'Observable
+  // Envoyer la réponse de confirmation
+  emitConfirmationResponse(response: boolean | null ): void {
+    this.confirmationResponseSource.next(response);
   }
 }

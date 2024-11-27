@@ -80,6 +80,7 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
 .search-bar {
@@ -214,3 +215,175 @@ body {
   box-shadow: 0 4px 2px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
 }
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    grid-template-areas:
+      'header'
+      'main';
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .logo {
+    font-size: 2rem;
+    position: static;
+  }
+
+  .main-content {
+    padding: 20px;
+    width: 100%;
+    left: 0;
+  }
+
+  .search-bar {
+    width: 100%;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+  }
+
+  .add-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    grid-template-areas:
+      'header'
+      'main';
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: auto;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .logo {
+    font-size: 2rem;
+    position: static;
+    left: 0;
+    margin-bottom: 10px;
+  }
+
+  .main-content {
+    padding: 20px;
+    width: 100%;
+    left: 0;
+    overflow-x: hidden;
+  }
+
+  .header-content {
+    flex-direction: column;
+    margin-left: 0;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .search-bar {
+    width: 100%;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+  }
+
+  .add-btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+    padding: 0;
+  }
+
+  .users-table {
+    width: 100%;
+    min-width: 600px; /* Ensures table doesn't get too narrow */
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .pagination-controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .pagination-controls button {
+    margin: 5px;
+    padding: 5px 10px;
+  }
+}
+
+/* Additional responsiveness for smaller screens */
+@media (max-width: 480px) {
+  .main-content {
+    padding: 10px;
+  }
+
+  .users-table {
+    min-width: 500px; /* Slightly smaller minimum width for very small screens */
+    font-size: 0.8rem;
+  }
+
+  .users-table th,
+  .users-table td {
+    padding: 5px;
+  }
+
+  .role, 
+  .status {
+    font-size: 0.7rem;
+    padding: 3px 6px;
+  }
+}
+
+/* Horizontal scroll for table on smaller screens */
+@media (max-width: 768px) {
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+}
+

@@ -8,11 +8,11 @@ import { MessageService } from '../message.service'; // Importation du service p
 
 
 @Component({
-    selector: 'app-user-edit',
-    imports: [CommonModule, FormsModule, RouterModule],
-    standalone: true,
-    templateUrl: './edit-users.component.html',
-    styleUrls: ['./edit-users.component.css']
+  selector: 'app-user-edit',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
+  templateUrl: './edit-users.component.html',
+  styleUrls: ['./edit-users.component.css'],
 })
 export class UserEditComponent implements OnInit {
   userId!: string;
@@ -45,17 +45,26 @@ export class UserEditComponent implements OnInit {
       this.user = data;
     });
   }
+  errorMessage: string = '';
+  
 
-  // Méthode de mise à jour de l'utilisateur
   updateUser(): void {
-    this.userService.updateUser(this.userId, this.user).subscribe(() => {
-      // Affichage du message de succès via le service de message
-      this.messageService.showMessage({
-        type: 'success',
-        text: 'Utilisateur mis à jour avec succès !',
-      });
-      // Redirection vers la liste des utilisateurs
-      this.router.navigate(['/list-users']);
+    this.userService.updateUser(this.userId, this.user).subscribe({
+      next: () => {
+        this.messageService.showMessage({
+          type: 'success',
+          text: 'Utilisateur mis à jour avec succès !',
+        });
+        this.router.navigate(['/list-users']);
+      },
+      error: (err) => {
+        this.errorMessage = err.message; // Affiche directement le message reçu
+        console.error('Erreur capturée :', err); // Log pour débogage
+      },
     });
   }
+
+
+  
+  
 }

@@ -9,11 +9,11 @@ import { MessageService } from '../message.service';
 
 
 @Component({
-    selector: 'app-list-users', // Indique que ce composant est autonome
-    standalone: true,  // Indique que ce composant est autonome
-    imports: [CommonModule, RouterModule, FormsModule, ModalComponent], // Ajout de FormsModule ici
-    templateUrl: './list-users.component.html',
-    styleUrls: ['./list-users.component.css']
+  selector: 'app-list-users',
+  standalone: true, // Indique que ce composant est autonome
+  imports: [CommonModule, RouterModule, FormsModule,ModalComponent], // Ajout de FormsModule ici
+  templateUrl: './list-users.component.html',
+  styleUrls: ['./list-users.component.css'],
 })
 
 export class ListUsersComponent {
@@ -74,27 +74,38 @@ export class ListUsersComponent {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  // Supprimer un utilisateur
-  deleteUser(id: string): void {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
-      this.userService.deleteUser(id).subscribe(
-        () => {
-          this.users = this.users.filter(user => user._id !== id);
-          this.messageService.showMessage({
-            type: 'success',
-            text: 'Utilisateur supprimer avec succes',
-          });
-          setTimeout(() => {
-            window.location.reload(); // Actualiser la page après 2 secondes
-          }, 3000);
-        },
-        (error) => {
-          console.error(`Erreur lors de la suppression de l'utilisateur avec ID ${id} :`, error);
-        }
-      );
-    }
+//Afficher le modal pour confirmer la suppression
+deleteUser(id: string): void {
+  this.messageService.showMessage({
+    type: 'confirm',
+    text: 'Êtes-vous sûr de vouloir supprimer cet utilisateur ?',
+  });
+// Attendre la confirmation via un modal
+this.messageService.confirmationResponse$.subscribe((response: boolean | null) => {
+  if (response) {
+    this.executeDelete(id);
   }
+});
+}//Fonction exécutée si l'utilisateur confirme la suppression
+private executeDelete(id: string): void {
+  this.userService.deleteUser(id).subscribe(
+    () => {
+      this.users = this.users.filter(user => user._id !== id);
+      this.messageService.showMessage({
+        type: 'success',
+        text: 'Utilisateur supprimé avec succès',
+      });
+      setTimeout(() => {
+        window.location.reload(); // Actualiser la page après 2 secondes
+      }, 3000);
+    },
+    (error) => {
+      console.error(`Erreur lors de la suppression de l'utilisateur avec ID ${id} :`, error);
+    }
+  );
+}
 
+  
 
 
 
@@ -116,6 +127,7 @@ export class ListUsersComponent {
       }
     );
   }
+
 
   // Changer l'état d'accès (activer ou archiver un utilisateur)
   toggleAccess(user: User): void {
@@ -145,5 +157,8 @@ export class ListUsersComponent {
   redirectToDashboardAdmin() {
     this.router.navigate(['/dashboard/admin']);
   }
+
+
+
   
 }
