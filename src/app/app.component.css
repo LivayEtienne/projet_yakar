@@ -1,0 +1,26 @@
+/* Styles pour le mode jour (par défaut) */
+body.day-mode {
+  background-color: white;
+  color: black;
+}
+
+body.night-mode {
+  background-color: #121212; /* Un fond sombre pour le mode nuit */
+  color: white;
+}
+
+button {
+    background-color: #2b8a7c; /* Couleur de fond */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Animation pour le survol */
+}
+  
+button:hover {
+    background-color: #1e5d4d;
+}
+  

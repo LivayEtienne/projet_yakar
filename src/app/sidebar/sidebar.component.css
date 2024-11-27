@@ -1,8 +1,10 @@
+/* Corps de la page */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
 }
 
+/* Sidebar pour les grands écrans */
 .sidebar {
   width: 60px;
   height: 450px;
@@ -13,17 +15,19 @@ body {
   justify-content: space-around;
   align-items: center;
   padding: 20px 0;
-  position: relative;
+  position: fixed;  /* Garder la sidebar fixe sur la page */
+  top: 0;
+  left: 0;
+  z-index: 10;
 }
 
+/* Icônes de la sidebar */
 .icon {
   width: 50px;
   height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
- 
-  
   color: white;
   border-radius: 50%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -39,3 +43,61 @@ body {
 .icon i {
   font-size: 20px;
 }
+
+/* Rendre la sidebar horizontale sur petits écrans */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 100%;
+    height: 60px;
+    background-color: #2b8a7c;
+    border-radius: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  .icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Cacher la sidebar sur les petits écrans quand elle est activée */
+  .sidebar.hidden {
+    display: none;
+  }
+}
+
+/* Pour afficher la sidebar comme une navbar hamburger */
+@media (max-width: 768px) {
+  .sidebar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #2b8a7c;
+    height: 60px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  
+  /* Optionnel : ajouter un bouton hamburger si besoin */
+  .hamburger {
+    display: none;
+    font-size: 30px;
+    cursor: pointer;
+    color: white;
+  }
+
+  /* Cacher la sidebar quand elle est fermée */
+  .sidebar.hidden {
+    display: none;
+  }
+}
+

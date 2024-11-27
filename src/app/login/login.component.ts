@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 import { WebsocketService } from '../web-socket.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { ThemeToggleComponent } from '../../theme-toggle/theme-toggle.component';
 import { CodeService } from '../code.service';
 
 
@@ -14,7 +15,7 @@ import { CodeService } from '../code.service';
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
- 
+    ThemeToggleComponent, 
   ],
   standalone: true,
   templateUrl: './login.component.html',

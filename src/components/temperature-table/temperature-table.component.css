@@ -246,3 +246,94 @@ ngx-charts-pie-chart:hover {
 .mise{
   display: flex;
 }
+
+/* Media Queries pour les petits écrans */
+@media (max-width: 1200px) {
+  .container {
+    flex-direction: row;
+  }
+
+
+  .main-content {
+    padding: 15px;
+  }
+
+  .table-container h2 {
+    font-size: 1.2em;  /* Réduire la taille du titre pour s'adapter à l'écran */
+  }
+
+  /* Table responsive */
+  table {
+    width: 100%;
+    overflow-x: auto;
+    display: block;
+    white-space: nowrap;
+  }
+
+  table th, table td {
+    padding: 10px;
+    font-size: 0.9em;
+  }
+
+  ngx-charts-pie-chart {
+    height: 250px;  /* Réduire la taille du graphique */
+  }
+}
+
+/* Media Queries pour les très petits écrans (mobile portrait) */
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;  /* Organiser les éléments en colonne */
+  }
+
+  .sidebar {
+    width: 100%;  /* Sidebar prend toute la largeur */
+    height: auto;
+    padding: 10px;
+  }
+
+  .main-content {
+    padding: 10px;
+  }
+
+  .table-container h2 {
+    font-size: 1em;  /* Réduire encore plus la taille du titre */
+  }
+
+  table th, table td {
+    font-size: 0.8em;  /* Ajuster la taille du texte dans la table */
+  }
+
+  ngx-charts-pie-chart {
+    height: 200px;  /* Adapter la taille du graphique pour mobile */
+  }
+
+  /* Modifier le style de la section sélectionnée pour s'adapter aux petits écrans */
+  .selected-data-container {
+    padding: 15px;
+  }
+}
+
+/* Media Queries pour les écrans très petits (téléphones) */
+@media (max-width: 480px) {
+  .sidebar {
+    display: none;  /* Masquer la sidebar sur mobile */
+  }
+
+  .main-content {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .table-container {
+    margin: 10px 0;
+  }
+
+  .chart-container {
+    padding: 15px;
+  }
+
+  .selected-data-container {
+    font-size: 0.9em;  /* Ajuster la taille du texte */
+  }
+}

@@ -1,4 +1,8 @@
 <!-- login.component.html -->
+<div class="app-container">
+  <app-theme-toggle></app-theme-toggle>
+  <!-- Other content of your app -->
+</div>
 <div class="login-container">
 
     <div class="login-image">
@@ -11,8 +15,8 @@
     <div class="login-content">
       <form [formGroup]="loginForm" (ngSubmit)="login()" class="login-form" novalidate>
         <div>
-          <img src="assets/Yaakaar.png" alt="Logo-Yakar">
-          <h6>Votre plateforme de contrôle pour vos machines</h6>
+          <img src="assets/Yaakaar.png" alt="Logo-Yakar" class="logo">
+          <h6 class="titre1">Votre plateforme de contrôle pour vos machines</h6>
         </div>
         <h1 id="titre">Connexion</h1>
       
@@ -34,7 +38,7 @@
       
         <!-- Champ mot de passe -->
         <div class="form-group">
-          <label for="password">Mot de passe</label>
+          <label for="password">Mot de Passe</label>
           <input
             type="password"
             id="password"

@@ -21,4 +21,24 @@ export class SidebarComponent {
   redirectToDashboardAdmin() {
     this.router.navigate(['/dashboard/admin']);
   }
+
+  isSidebarOpen = false;
+  isDarkMode = false;
+
+  // Méthode pour toggler la sidebar
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  // Méthode pour basculer entre le mode nuit et jour
+  toggleTheme() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-mode');  // Appliquer la classe dark-mode au body
+    } else {
+      document.body.classList.remove('dark-mode');  // Retirer la classe dark-mode
+    }
+  }
+
+  
 }
