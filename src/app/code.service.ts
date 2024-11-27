@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { webSocket } from 'rxjs/webSocket';
-import { Observable} from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class WebsocketService {
-
+export class CodeService {
   private socket$: any;
-  private socketUrl: string = 'ws://localhost:8080'; // URL du serveur WebSocket (Node.js)
+  private socketUrl: string = 'ws://localhost:8000'; // URL du serveur WebSocket (Node.js)
 
+
+
+  
   constructor() {
     // Initialiser la connexion WebSocket
     this.socket$ = webSocket(this.socketUrl);
@@ -20,13 +22,11 @@ export class WebsocketService {
     return this.socket$;
   }
 
-  // Méthode pour envoyer des messages au serveur WebSocket
-  sendMessage(message: any): void {
-    this.socket$.next(message);
-  }
 
   // Méthode pour fermer la connexion WebSocket
   closeConnection(): void {
     this.socket$.complete();
   }
 }
+
+

@@ -5,6 +5,7 @@ import { AuthService } from '../auth.service';
 import { WebsocketService } from '../web-socket.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { CodeService } from '../code.service';
 
 
 @Component({
@@ -38,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private webSocketService: WebsocketService
+    private codeService: CodeService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]], // Validation email
@@ -50,7 +51,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    
 
     // Écoute des données reçues
-    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
+    this.socketSubscription = this.codeService.getMessages().subscribe((message) => {
       if (message.type === 'keypad') {
         const char = message.value;
         console.log(message.value);
@@ -238,6 +239,6 @@ get showPassword() {
     if (this.socketSubscription) {
       this.socketSubscription.unsubscribe();
     }
-    this.webSocketService.closeConnection();
+    this.codeService.closeConnection();
   }
 }
