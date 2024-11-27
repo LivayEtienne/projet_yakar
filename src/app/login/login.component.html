@@ -28,7 +28,6 @@
           />
           <small *ngIf="showEmail?.invalid && (showEmail?.touched || showEmail?.dirty)" class="error-message">
             <br>
-            <span *ngIf="showEmail?.errors?.['required']">L'email est requis.</span>
             <span *ngIf="showEmail?.errors?.['email']">L'adresse email est invalide.</span>
           </small>
         </div>
@@ -45,7 +44,6 @@
           />
           <br>
           <small *ngIf="showPassword?.invalid && (showPassword?.touched || showPassword?.dirty)" class="error-message">
-            <span *ngIf="showPassword?.errors?.['required']"><br>Le mot de passe est requis.</span>
             <span *ngIf="showPassword?.errors?.['minlength']"><br>
               Le mot de passe doit contenir au moins 8 caractères.
             </span>
@@ -61,7 +59,7 @@
       
         <!-- Connexion par code secret -->
         <div class="secret-connection">
-          <h5>Connexion par code secret</h5>
+          <p>Connexion par code secret</p>
           <button type="button" (click)="showSecretModal()" class="btn btn-confirm">Connexion code secret</button>
         </div>
       </form>

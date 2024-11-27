@@ -12,6 +12,7 @@
   display: flex;
   width: 40%;
   margin: 25px ;
+  background-color: #d1d1d1;
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden; /* S'assurer que tout reste dans les limites */
@@ -104,15 +105,15 @@ img {
 .btn {
   padding: 0.5rem 1rem;
   font-size: 1rem;
-  width: 50%;
+  width: 90%;
   border: none;
+  margin-right: 15px;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 #btnSubmit {
-  margin-left: 25%;
   margin-bottom: 30px;
 }
 .btn:focus {
@@ -199,7 +200,6 @@ input:focus {
 
 .secret-connection {
   margin-top: 1.5rem;
-  text-align: center;
 }
 
 .secret-connection a:hover {
@@ -217,9 +217,11 @@ input:focus {
  
   }
 
-  h6 {
-    margin: 1px;
-  }
+  p {
+    font-family: 'Poppins', sans-serif; /* Appliquer la police Poppins */
+    font-size: 9px; /* Ajuster la taille de la police */
+    margin: 0; /* Supprimer les marges si nécessaire */
+}
 }
 
 .error-message {
@@ -228,20 +230,12 @@ input:focus {
   margin-top: 5px;
 }
 
-/* Styles pour les champs invalides */
-input.invalid {
-  border: 1px solid red;
-}
-
 .valid {
   border: 2px solid green; /* Bordure verte si rempli */
   background-color: #e6ffe6; /* Optionnel : Fond vert pâle */
 }
 
-.invalid {
-  border: 2px solid red; /* Bordure rouge si vide */
-  background-color: #ffe6e6; /* Optionnel : Fond rouge pâle */
-}
+
 
 .disable-mouse {
   pointer-events: none; /* Toujours désactiver les interactions de la souris */

@@ -21,14 +21,13 @@ export class ViewGraphComponent implements OnInit {
     // Initialiser le graphique avec des données fictives
     this.initializeGraph();
 
-    this.socketSubscription = this.webSocketService.getMessages().subscribe((message) => {
-      if (message.type === 'sensor') {
-        this.sensorData.temperature = message.temperature;
-        this.sensorData.humidity = message.humidity;
-      }
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((data) => {
+      
+        this.sensorData.temperature = data.temperature;
+        this.sensorData.humidity = data.humidity;
     });
     // Mettre à jour les données en temps réel toutes les 5 secondes
-    setInterval(() => this.updateRealTimeData(), 10000);
+    setInterval(() => this.updateRealTimeData(), 1000);
   }
 
   initializeGraph(): void {
@@ -85,6 +84,7 @@ export class ViewGraphComponent implements OnInit {
       if (message.type === 'sensor') {
         this.sensorData.temperature = message.temperature;
         this.sensorData.humidity = message.humidity;
+        
       }
       const tempSeries = this.chart?.series[0];
       tempSeries?.addPoint(this.sensorData.temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points

@@ -1,0 +1,124 @@
+/* Conteneur principal */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 0.5rem;
+  }
+  
+  /* Header pleine largeur */
+  .header-container {
+    flex-shrink: 0;
+    width: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Assure que le header est au-dessus */
+  }
+  
+  /* Section principale avec sidebar et contenu */
+  .main-container {
+    display: flex;
+    flex-grow: 1;
+    gap: 0.5rem;
+    width: 100%;
+    overflow: hidden; /* Evite le débordement horizontal */
+  }
+  
+  /* Sidebar fixée à gauche */
+  .sidebar-container {
+    display: flex;
+    flex-direction: column;
+    width: 250px;
+    background-color: #f4f4f4;
+    padding: 0.5rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Footer dans la sidebar */
+  .fan-container {
+    margin-top: auto; /* Positionné en bas de la sidebar */
+    padding-top: 1rem;
+  }
+  
+  /* Contenu principal */
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 1rem;
+    gap: 1rem;
+    box-sizing: border-box;
+    overflow-y: auto; /* Permet un défilement si le contenu dépasse */
+  }
+  
+  /* Section des cartes */
+  .cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap; /* Adaptation aux petits écrans */
+  }
+  
+  /* Graphique */
+  .graph-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 400px;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  /* Cartes du bas de page */
+  .footer-cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Style pour chaque carte */
+  .average-card,
+  .temperature-card,
+  .humidity-card,
+  .moyenne1,
+  .moyenne2,
+  .moyenne3 {
+    width: 200px;
+    height: 120px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+  }
+  
+  /* RESPONSIVITÉ */
+  
+  /* Petits écrans (mobile) */
+  @media (max-width: 768px) {
+    .main-container {
+      flex-direction: column; /* Sidebar au-dessus du contenu */
+    }
+  
+    .sidebar-container {
+      width: 100%;
+    }
+  
+    .cards-container,
+    .footer-cards-container {
+      gap: 0.5rem;
+    }
+  }
+  
+  /* Tablettes */
+  @media (max-width: 1024px) {
+    .sidebar-container {
+      width: 220px; /* Sidebar plus étroite */
+    }
+  }
+  

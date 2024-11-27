@@ -41,8 +41,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private webSocketService: WebsocketService
   ) {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      email: ['', [Validators.required, Validators.email]], // Validation email
+      password: ['', [Validators.required, Validators.minLength(8)]] // Validation mot de passe
     });
   }
 

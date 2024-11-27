@@ -44,14 +44,12 @@ export class ApiService {
   }
 
   getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
-    return this.http.get<{ data: { temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
+    return this.http.get<{ data: { time: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`).pipe(
       map(response => {
-        const times = ['10:00', '14:00', '17:00']; // Horaires fixes
-        return response.data.map((item, index) => ({
-          time: times[index] || 'N/A', // Associer les horaires fixes
-          temperature: item.temperature,
-          humidity: item.humidity,
-        })).filter(item => item.temperature !== undefined && item.humidity !== undefined); // Filtrer les valeurs non définies
+        console.log('Données reçues:', response.data);
+        return response.data.filter(item => 
+          item.temperature !== null && item.humidity !== null
+        ); // Filtrer les relevés valides
       }),
       catchError(error => {
         console.error('Erreur lors de la récupération des relevés :', error);

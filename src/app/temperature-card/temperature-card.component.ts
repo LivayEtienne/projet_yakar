@@ -13,10 +13,13 @@ import { Subscription } from 'rxjs';
 export class TemperatureCardComponent {
   temperature: number | null = null; // Initialisation de la température
   private socketSubscription: Subscription | undefined;
+  private updateInterval: any;  // Variable pour stocker l'intervalle
 
   constructor(private webSocketService: WebsocketService) {}
+
   ngOnInit(): void {
-    this.getTemperature(); // Récupération de la température au démarrage
+    this.getTemperature(); // Récupération initiale de la température
+    this.startTemperatureUpdates(); // Démarrer la mise à jour périodique de la température
   }
 
   // Récupérer la température depuis l'API
@@ -26,6 +29,13 @@ export class TemperatureCardComponent {
         this.temperature = message.temperature;
       }
     });
+  }
+
+  // Démarrer la mise à jour périodique de la température
+  startTemperatureUpdates() {
+    this.updateInterval = setInterval(() => {
+      this.getTemperature(); // Récupérer la température toutes les X millisecondes (par exemple, toutes les 5 secondes)
+    }, 1000); // Mettre à jour toutes les 5 secondes
   }
 
   // Calculer l'offset pour le cercle SVG basé sur la température
@@ -45,6 +55,13 @@ export class TemperatureCardComponent {
     if (this.socketSubscription) {
       this.socketSubscription.unsubscribe();
     }
+
+    // Arrêter l'intervalle de mise à jour de la température
+    if (this.updateInterval) {
+      clearInterval(this.updateInterval);
+    }
+
+    // Fermer la connexion WebSocket
     this.webSocketService.closeConnection();
   }
 }

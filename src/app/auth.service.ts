@@ -70,7 +70,7 @@ export class AuthService {
     console.error('Erreur lors de la connexion:', error);
 
     // Vérifier si l'erreur est une 401 (Unauthorized)
-    if (error.status === 401) {
+    if (error.status) {
       // Si l'erreur contient un message dans `error.error.msg`, on peut y accéder comme ceci
       const errorMsg = error.error?.msg || 'Une erreur inconnue est survenue';
       return throwError(errorMsg); // On renvoie le message d'erreur

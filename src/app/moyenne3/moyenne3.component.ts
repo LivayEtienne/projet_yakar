@@ -17,7 +17,7 @@ export class Moyenne3Component {
   ngOnInit(): void {
     this.apiService.getRelevesFixes().subscribe((releves) => {
       // Recherche d'un relevé spécifique pour 17h
-      const releve17h = releves.find(releve => releve.time === '17:00'); // Utilisez 'time' ici
+      const releve17h = releves.find(releve => releve.time === '18:41'); // Utilisez 'time' ici
 
       if (releve17h) {
         this.temperature = releve17h.temperature;
