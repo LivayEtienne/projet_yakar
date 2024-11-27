@@ -11,7 +11,7 @@
 <!-- Modal pour confirmation (ex: suppression d'utilisateur) -->
 <div *ngIf="message && message.type === 'confirm'" class="modal-overlay">
   <div class="modal-content">
-    <h2>{{ message.text }}</h2>
+    <h3>{{ message.text }}</h3>
     <div class="modal-actions">
       <button (click)="onConfirm(true)">Confirmer</button>
       <button (click)="onConfirm(false)">Annuler</button>
