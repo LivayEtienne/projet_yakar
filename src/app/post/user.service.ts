@@ -40,12 +40,12 @@ export class UserService {
       .pipe(catchError(this.errorHandler)); // Gestion des erreurs
   }
 
-  // Mettre à jour un utilisateur
   updateUser(id: string, user: User): Observable<User> {
     return this.http
-      .put<User>(`${this.apiURL}/${id}`, JSON.stringify(user), this.httpOptions)
+      .put<User>(`${this.apiURL}/${id}`, user, this.httpOptions)
       .pipe(catchError(this.errorHandler)); // Gestion des erreurs
   }
+  
 
   // Supprimer un utilisateur
   deleteUser(id: string): Observable<void> {
@@ -68,17 +68,21 @@ export class UserService {
       .pipe(catchError(this.errorHandler)); // Gestion des erreurs
   }
 
-  // Gérer les erreurs HTTP
   private errorHandler(error: any): Observable<never> {
-    let errorMessage = '';
-    if (error.error instanceof ErrorEvent) {
-      // Erreur côté client
-      errorMessage = `Erreur : ${error.error.message}`;
-    } else {
-      // Erreur côté serveur
-      errorMessage = `Code d'erreur : ${error.status}\nMessage : ${error.message}`;
-    }
-    console.error(errorMessage); // Log dans la console
-    return throwError(() => errorMessage); // Propager l'erreur
+    const errorMessage =
+      error.error?.message || // Message spécifique du backend
+      (error.error instanceof ErrorEvent
+        ? error.error.message // Erreur côté client
+        : `Code d'erreur : ${error.status}\nMessage : ${error.statusText}`) || 
+      'Une erreur inconnue est survenue.';
+  
+    console.error('Détails de l\'erreur :', error); // Log complet pour débogage
+  
+    return throwError(() => ({
+      status: error.status || 0, // Status peut être inexistant
+      message: errorMessage,
+    }));
   }
+  
+  
 }

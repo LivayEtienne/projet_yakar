@@ -9,14 +9,18 @@ import { Location } from '@angular/common'
 
 
 @Component({
-    selector: 'app-create-user',
-    templateUrl: './create-users.component.html',
-    styleUrls: ['./create-users.component.css'],
-    imports: [CommonModule, ReactiveFormsModule]
+  selector: 'app-create-user',
+  standalone: true,
+  templateUrl: './create-users.component.html',
+  styleUrls: ['./create-users.component.css'],
+  imports: [CommonModule, ReactiveFormsModule], // Ajouter CommonModule et ReactiveFormsModule
 })
 export class CreateUserComponent {
   userForm: FormGroup;
   currentStep: number = 1; // Variable pour suivre l'étape actuelle
+  showPassword: boolean = false; 
+
+
 
   constructor(private fb: FormBuilder, private userService: UserService,   private messageService: MessageService ,private location: Location, private router: Router) {
     this.userForm = this.fb.group({
@@ -25,11 +29,25 @@ export class CreateUserComponent {
       telephone: [null, [Validators.required, Validators.pattern(/^\d{8,15}$/)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
-      code: [null, Validators.required],
+      code: [
+        null,
+        [
+          Validators.required,
+          Validators.min(1), // Pour que le code soit positif
+          Validators.max(9999), // Pour un maximum de 4 chiffres
+          Validators.pattern(/^\d{4}$/) // Exactement 4 chiffres (0-9)
+        ]
+      ]
+      ,
       role: ['user', Validators.required],
     });
   }
 
+
+   // Méthode pour basculer l'affichage du mot de passe
+   togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+  }
   // Passer à l'étape suivante
   nextStep() {
     if (this.currentStep === 1 && this.userForm.get('prenom')?.valid && this.userForm.get('nom')?.valid) {

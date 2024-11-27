@@ -104,3 +104,8 @@ input:focus {
   font-size: 0.9em;
   margin-top: 4px;
 }
+.alert{
+  position: absolute;
+  top: 75px;
+  right: 800px;
+}

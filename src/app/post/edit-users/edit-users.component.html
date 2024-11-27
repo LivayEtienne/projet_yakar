@@ -2,8 +2,14 @@
   <h1 class="title">Yakaar</h1>
   <h2 class="modification-title">MODIFICATION</h2>
 
+  <!-- Affichage des messages d'erreur du serveur -->
+  <div *ngIf="errorMessage" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+  
+  
+
   <form (ngSubmit)="updateUser()" #userForm="ngForm">
-    <!-- Formulaire avec les champs pour l'utilisateur -->
     <div class="input-group">
       <div class="form-field">
         <label>Nom</label>
@@ -45,6 +51,3 @@
     </div>
   </form>
 </div>
-
-<!-- Inclure la modale -->
-

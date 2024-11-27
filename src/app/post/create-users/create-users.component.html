@@ -1,113 +1,129 @@
 <!-- create-users.component.html -->
 <div class="container">
-    <button (click)="goBack()" class="btn-retour">
-      <i class="fa-solid fa-arrow-left"></i> Retour
-    </button>
-    <div class="bande">
-        
-    </div>
-    <div class="bande2">
-        
-    </div>
-  
-    <div class="form-card">
-      <h1>Creation de compte</h1>
-  
-      <!-- Barre de progression -->
-      <div class="progress-bar">
-        <div class="progress-line">
-          <div class="progress-fill" [style.width]="((currentStep - 1) / 2) * 100 + '%'"></div>
-        </div>
-        <div class="step-indicators">
-          <div class="step" [class.active]="currentStep >= 1">1</div>
-          <div class="step" [class.active]="currentStep >= 2">2</div>
-          <div class="step" [class.active]="currentStep >= 3">3</div>
-        </div>
-      </div>
+  <button (click)="goBack()" class="btn-retour">
+    <i class="fa-solid fa-arrow-left"></i> Retour
+  </button>
+  <div class="bande">
       
-  
-      <!-- Formulaire -->
-      <form [formGroup]="userForm">
-        <!-- Étape 1 : Identité -->
-        <div class="form-content" *ngIf="currentStep === 1">
-          <h2>Identité</h2>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Nom</label>
-              <input type="text" formControlName="nom" placeholder="nom">
-              <small class="error" *ngIf="userForm.get('nom')?.invalid && userForm.get('nom')?.touched">
-                Le nom est requis.
-              </small>
-            </div>
-            <div class="form-group">
-              <label>Prenom</label>
-              <input type="text" formControlName="prenom" placeholder="prenom">
-              <small class="error" *ngIf="userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched">
-                Le prénom est requis.
-              </small>
-            </div>
-          </div>
-          <button type="button" class="btn-continue" (click)="nextStep()">
-            Continue →
-          </button>
-        </div>
-  
-        <!-- Étape 2 : Coordonnées -->
-        <div class="form-content" *ngIf="currentStep === 2">
-          <h2>Coordonnées</h2>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Téléphone</label>
-              <input type="tel" formControlName="telephone" placeholder="Téléphone">
-              <small class="error" *ngIf="userForm.get('telephone')?.invalid && userForm.get('telephone')?.touched">
-                Numéro de téléphone invalide.
-              </small>
-            </div>
-            <div class="form-group">
-              <label>Email</label>
-              <input type="email" formControlName="email" placeholder="Email">
-              <small class="error" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
-                Email invalide.
-              </small>
-            </div>
-          </div>
-          <div class="buttons">
-            <button type="button" class="btn-prev" (click)="prevStep()">← Précédent</button>
-            <button type="button" class="btn-continue" (click)="nextStep()">Continue →</button>
-          </div>
-        </div>
-  
-        <!-- Étape 3 : Sécurité -->
-        <div class="form-content" *ngIf="currentStep === 3">
-          <h2>Sécurité</h2>
-          <div class="form-row">
-            <div class="form-group">
-              <label>Mot de passe</label>
-              <input type="password" formControlName="password" placeholder="Mot de passe">
-              <small class="error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
-                Mot de passe requis.
-              </small>
-            </div>
-            <div class="form-group">
-              <label>Code</label>
-              <input type="number" formControlName="code" placeholder="Code">
-              <small class="error" *ngIf="userForm.get('code')?.invalid && userForm.get('code')?.touched">
-                Code requis.
-              </small>
-            </div>
+  </div>
+  <div class="bande2">
+      
+  </div>
+
+  <div class="form-card">
+    <h1>Creation de compte</h1>
+
+    <!-- Barre de progression -->
+    <div class="progress-bar">
+      <div class="progress-line">
+        <div class="progress-fill" [style.width]="((currentStep - 1) / 2) * 100 + '%'"></div>
+      </div>
+      <div class="step-indicators">
+        <div class="step" [class.active]="currentStep >= 1">1</div>
+        <div class="step" [class.active]="currentStep >= 2">2</div>
+        <div class="step" [class.active]="currentStep >= 3">3</div>
+      </div>
+    </div>
+    
+
+    <!-- Formulaire -->
+    <form [formGroup]="userForm">
+      <!-- Étape 1 : Identité -->
+      <div class="form-content" *ngIf="currentStep === 1">
+        <h2>Identité</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nom</label>
+            <input type="text" formControlName="nom" placeholder="nom">
+            <small class="error" *ngIf="userForm.get('nom')?.invalid && userForm.get('nom')?.touched">
+              Le nom est requis.
+            </small>
           </div>
           <div class="form-group">
-            <label>Rôle</label>
-            <select formControlName="role">
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div class="buttons">
-            <button type="button" class="btn-prev" (click)="prevStep()">← Précédent</button>
-            <button type="button" class="btn-continue" (click)="nextStep()">Soumettre</button>
+            <label>Prenom</label>
+            <input type="text" formControlName="prenom" placeholder="prenom">
+            <small class="error" *ngIf="userForm.get('prenom')?.invalid && userForm.get('prenom')?.touched">
+              Le prénom est requis.
+            </small>
           </div>
         </div>
-      </form>
-    </div>
+        <button type="button" class="btn-continue" (click)="nextStep()">
+          Continue →
+        </button>
+      </div>
+
+      <!-- Étape 2 : Coordonnées -->
+      <div class="form-content" *ngIf="currentStep === 2">
+        <h2>Coordonnées</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" formControlName="telephone" placeholder="Téléphone">
+            <small class="error" *ngIf="userForm.get('telephone')?.invalid && userForm.get('telephone')?.touched">
+              Numéro de téléphone invalide.
+            </small>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" formControlName="email" placeholder="Email">
+            <small class="error" *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+              Email invalide.
+            </small>
+          </div>
+        </div>
+        <div class="buttons">
+          <button type="button" class="btn-prev" (click)="prevStep()">← Précédent</button>
+          <button type="button" class="btn-continue" (click)="nextStep()">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Étape 3 : Sécurité -->
+      <div class="form-content" *ngIf="currentStep === 3">
+        <h2>Sécurité</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Mot de passe</label>
+            
+            <!-- Conteneur pour l'input et le bouton -->
+            <div class="password-container">
+              <input 
+                [type]="showPassword ? 'text' : 'password'" 
+                formControlName="password" 
+                placeholder="Mot de passe">
+              
+              <!-- Icône de visibilité du mot de passe -->
+              <button type="button" (click)="togglePasswordVisibility()" class="password-toggle">
+                <i [class]="showPassword ? 'fa-sharp fa-solid fa-eye' : 'fa-sharp fa-solid fa-eye-slash'"></i>
+              </button>
+            </div>
+          
+            <small class="error" *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+              Mot de passe requis.
+            </small>
+          </div>
+          
+          
+          
+          <div class="form-group">
+            <label>Code</label>
+            <input type="number" formControlName="code" placeholder="Code">
+            <small class="error" *ngIf="userForm.get('code')?.invalid && userForm.get('code')?.touched">
+              Code requis et doit comporter 4 chiffre positif.
+            </small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Rôle</label>
+          <select formControlName="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div class="buttons">
+          <button type="button" class="btn-prev" (click)="prevStep()">← Précédent</button>
+          <button type="button" class="btn-continue" (click)="nextStep()">Soumettre</button>
+        </div>
+      </div>
+    </form>
   </div>
+</div>

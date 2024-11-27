@@ -78,12 +78,10 @@ exports.getAllUsers = (req, res, next) => {
 
 
 
-
-
 // UPDATE - Modifier un utilisateur par ID
 exports.updateUser = (req, res, next) => {
   const userId = req.params.id;
-  
+
   // On construit l'objet de mise à jour avec les champs envoyés dans la requête
   const updatedUser = {
     prenom: req.body.prenom,
@@ -91,19 +89,42 @@ exports.updateUser = (req, res, next) => {
     telephone: req.body.telephone,
     code: req.body.code,
     email: req.body.email,
-    role: req.body.role || 'user',  // Rôle par défaut "user"
+    role: req.body.role || 'user', // Rôle par défaut "user"
   };
 
   // Si le mot de passe est mis à jour, on le hache avant
   if (req.body.password) {
     bcrypt.hash(req.body.password, 10)
       .then(hash => {
-        updatedUser.password = hash;  // On met à jour le mot de passe haché
-        updateInDb();
+        updatedUser.password = hash; // On met à jour le mot de passe haché
+        checkEmailAndPhone();
       })
       .catch(error => res.status(500).json({ error }));
   } else {
-    updateInDb();
+    checkEmailAndPhone();
+  }
+
+  function checkEmailAndPhone() {
+    // Vérifie si l'email existe déjà dans la base de données
+    User.findOne({ email: req.body.email })
+      .then(existingEmailUser => {
+        if (existingEmailUser && existingEmailUser._id.toString() !== userId) {
+          return res.status(400).json({ message: 'Veuillez réessayer avec un autre email.' });
+        }
+
+        // Vérifie si le téléphone existe déjà dans la base de données
+        User.findOne({ telephone: req.body.telephone })
+          .then(existingPhoneUser => {
+            if (existingPhoneUser && existingPhoneUser._id.toString() !== userId) {
+              return res.status(400).json({ message: 'Veuillez réessayer avec un autre numéro de téléphone.' });
+            }
+
+            // Si tout est bon, mise à jour
+            updateInDb();
+          })
+          .catch(error => res.status(500).json({ error }));
+      })
+      .catch(error => res.status(500).json({ error }));
   }
 
   function updateInDb() {
@@ -118,6 +139,7 @@ exports.updateUser = (req, res, next) => {
       .catch(error => res.status(500).json({ error }));
   }
 };
+
 
 
 
