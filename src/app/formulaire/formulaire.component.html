@@ -1,31 +1,40 @@
 <!-- Bouton pour ouvrir le modal avec une icône -->
 <button (click)="openModal()" class="btn-open-modal">
-    <i class="fas fa-clock"></i> Choisir les heures
-  </button>
-  
-  <!-- Modal -->
-  <div *ngIf="isModalVisible"  class="modal">
-    <div class="modal-content">
-      <!-- Bouton de fermeture du modal -->
-      <span class="close-btn" (click)="closeModal()">×</span>
-      <h2>Configurez le temps</h2>
-  
-      <!-- Formulaire dans le modal -->
-      <form (ngSubmit)="onSubmit()">
+  <i class="fas fa-clock"></i> Choisir les heures
+</button>
+
+<!-- Modal -->
+<div *ngIf="isModalVisible" class="modal">
+  <div class="modal-content">
+    <!-- Bouton de fermeture du modal -->
+    <span class="close-btn" (click)="closeModal()">×</span>
+    <h2>Configurez le temps</h2>
+
+    <!-- Formulaire dans le modal -->
+    <form (ngSubmit)="onSubmit()">
+      <div *ngFor="let index of [0, 1, 2]; let i = index" class="time-selection">
+        <h4>Configuration {{ i + 1 }}</h4>
+        
+        <!-- Sélecteur pour les heures -->
         <div class="form-group">
-          <label for="hours">Heures :</label>
-          <input type="text" id="hours" [(ngModel)]="configHours" name="hours" placeholder="Ex: 10, 14, 18" />
+          <label for="hours{{ i }}">Heures :</label>
+          <select id="hours{{ i }}" [(ngModel)]="configHours[i]" name="hours{{ i }}">
+            <option *ngFor="let hour of availableHours" [value]="hour">{{ hour }}</option>
+          </select>
         </div>
-  
+
+        <!-- Sélecteur pour les minutes -->
         <div class="form-group">
-          <label for="minutes">Minutes :</label>
-          <input type="text" id="minutes" [(ngModel)]="configMinutes" name="minutes" placeholder="Ex: 00, 30, 45" />
+          <label for="minutes{{ i }}">Minutes :</label>
+          <select id="minutes{{ i }}" [(ngModel)]="configMinutes[i]" name="minutes{{ i }}">
+            <option *ngFor="let minute of availableMinutes" [value]="minute">{{ minute }}</option>
+          </select>
         </div>
-  
-        <button type="submit" class="btn-submit">Enregistrer</button>
-        <!-- Bouton pour fermer le modal sans soumettre -->
-        <button type="button" (click)="closeModal()" class="btn-close-modal">Fermer</button>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit" class="btn-submit">Enregistrer</button>
+      <!-- Bouton pour fermer le modal sans soumettre -->
+      <button type="button" (click)="closeModal()" class="btn-close-modal">Fermer</button>
+    </form>
   </div>
-  
+</div>

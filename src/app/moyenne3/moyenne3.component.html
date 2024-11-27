@@ -1,11 +1,5 @@
 <div class="moyenne3">
-  <div>17:00</div>
-
-  <!-- Afficher la température si disponible, sinon des pointillés -->
+  <div>{{ createTimeKey(config.hours[2], config.minutes[2]) }}</div>
   <div>{{ temperature !== null ? temperature + ' °C' : '... °C' }}</div>
-
-  <!-- Afficher l'humidité si disponible, sinon des pointillés -->
   <div>{{ humidity !== null ? humidity + '%' : '... %' }}</div>
-  
- 
 </div>
