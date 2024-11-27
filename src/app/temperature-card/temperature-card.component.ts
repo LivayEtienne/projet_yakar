@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import axios from 'axios';
-import { CommonModule } from '@angular/common'; // Import du CommonModule pour ngClass
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import du CommonModule pour ngClass
 import { WebsocketService } from '../web-socket.service';
 import { Subscription } from 'rxjs';

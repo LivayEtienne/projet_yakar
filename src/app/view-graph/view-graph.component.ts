@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
 import { WebsocketService } from '../web-socket.service';
 import { Subscription } from 'rxjs';
+import { ApiService } from "../services/api.service";
 
 @Component({
   selector: 'app-view-graph',
@@ -12,11 +13,10 @@ import { Subscription } from 'rxjs';
 export class ViewGraphComponent implements OnInit {
   public options: any;
   private chart: Highcharts.Chart | null = null;
-  private chart: Highcharts.Chart | null = null;
   public sensorData: { temperature: number; humidity: number } = { temperature: 0, humidity: 0 };
   private socketSubscription: Subscription | undefined;
 
-  constructor(private webSocketService: WebsocketService) {}
+  constructor(private webSocketService: WebsocketService, private apiService: ApiService) {}
 
   ngOnInit(): void {
     // Initialiser le graphique avec des données fictives
@@ -31,18 +31,7 @@ export class ViewGraphComponent implements OnInit {
     setInterval(() => this.updateRealTimeData(), 1000);
   }
 
-  initializeGraph(): void {
-    const categories = ['1', '2', '3', '4', '5']; // Points initiaux fictifs
-    const tempData = [22, 24, 21, 23, 25]; // Températures fictives
-    const humData = [45, 50, 48, 55, 60]; // Humidité fictive
-    //const tempData = this.sensorData.temperature;
-   // const humData = this.sensorData.humidity ;
-    // Initialiser le graphique avec des données fictives
-    this.initializeGraph();
-
-    // Mettre à jour les données en temps réel toutes les 5 secondes
-    setInterval(() => this.updateRealTimeData(), 5000);
-  }
+ 
 
   initializeGraph(): void {
     const categories = ['1', '2', '3', '4', '5']; // Points initiaux fictifs
