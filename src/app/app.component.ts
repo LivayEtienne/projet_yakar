@@ -10,6 +10,8 @@ import { Moyenne1Component } from "./moyenne1/moyenne1.component";
 import { Moyenne2Component } from './moyenne2/moyenne2.component';
 import { Moyenne3Component } from './moyenne3/moyenne3.component';
 import { FooterComponent } from './footer/footer.component';
+import { FormulaireComponent } from './formulaire/formulaire.component';
+
 
 
 
@@ -28,7 +30,8 @@ import { FooterComponent } from './footer/footer.component';
     Moyenne1Component,
     Moyenne2Component,
     Moyenne3Component,
-    FooterComponent
+    FooterComponent,
+    FormulaireComponent
 ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']

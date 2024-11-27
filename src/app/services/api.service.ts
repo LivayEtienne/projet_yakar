@@ -50,21 +50,29 @@ export class ApiService {
   controlFan(state: boolean): Observable<any> {
     return this.http.post(`${this.apiUrl}/control`, { state });
   }
+  getConfiguredTimes(): Observable<{ hours: number[], minutes: number[] }> {
+    return this.http.get<{ hours: number[], minutes: number[] }>(`${this.apiUrl}/configure-times`);
+  }
+  
+  setConfiguredTimes(hours: number[], minutes: number[]): Observable<any> {
+    return this.http.post(`${this.apiUrl}/configure-times`, { hours, minutes });
+  }
   
   
 
-  getRelevesFixes(): Observable<{ time: string, temperature: number, humidity: number }[]> {
+  getRelevesFixes(): Observable<{ time: string; temperature: number; humidity: number }[]> {
     return this.http
-      .get<{ message: string; data: { timestamp: string, temperature: number, humidity: number }[] }>(`${this.apiUrl}/mesures/specific-times`)
+      .get<{ message: string; data: { timestamp: string; temperature: number; humidity: number }[] }>(
+        `${this.apiUrl}/mesures/specific-times`
+      )
       .pipe(
         map(response => {
-          const times = ['18:00', '18:01', '18:02']; // Nouveaux horaires fixes
-          return response.data.map((item, index) => ({
-            time: times[index] || 'N/A', // Associer les horaires fixes
+          return response.data.map(item => ({
+            time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format HH:MM
             temperature: item.temperature,
             humidity: item.humidity,
           }));
         })
       );
   }
-  }
+}

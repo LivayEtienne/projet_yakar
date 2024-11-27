@@ -3,54 +3,56 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { SerialPort, ReadlineParser } from 'serialport';
 import dotenv from 'dotenv';
-import { Server as SocketIOServer } from 'socket.io'; // Import Socket.IO
-import http from 'http'; // Nécessaire pour utiliser Socket.IO avec Express
-import cron from 'node-cron'; // Importation de node-cron
+import { Server as SocketIOServer } from 'socket.io'; 
+import http from 'http'; 
+import cron from 'node-cron'; 
 
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app); // Création d'un serveur HTTP
-const io = new SocketIOServer(server); // Initialisation de Socket.IO avec le serveur HTTP
+const server = http.createServer(app); 
+const io = new SocketIOServer(server); 
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = 'mongodb://localhost:27017/gestionTempHumid';
-const SERIAL_PORT = '/dev/ttyACM0'; // Remplacez par votre port Arduino
+const SERIAL_PORT = '/dev/ttyACM0'; 
 
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Connexion à MongoDB
 mongoose
   .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connecté'))
   .catch((err) => console.error('Erreur MongoDB:', err));
 
-// Modèle de données pour les relevés
 const mesureSchema = new mongoose.Schema({
   temperature: { type: Number, required: true },
   humidity: { type: Number, required: true },
   timestamp: { type: Date, default: Date.now },
 });
+
 const MesureModel = mongoose.model('Mesure', mesureSchema);
 
-// Variable pour stocker les données actuelles en temps réel
+const configSchema = new mongoose.Schema({
+  hours: [Number],
+  minutes: [Number],
+});
+
+const Config = mongoose.model('Config', configSchema);
+
 let currentData = {
   temperature: null,
   humidity: null,
   timestamp: null,
 };
 
-// Fonction pour simuler les données des capteurs (en attendant des données réelles)
 function getSensorData() {
   return {
-    temperature: Math.floor(Math.random() * 10) + 20, // Simule une température entre 20°C et 30°C
-    humidity: Math.floor(Math.random() * 20) + 40,   // Simule une humidité entre 40% et 60%
+    temperature: Math.floor(Math.random() * 10) + 20, 
+    humidity: Math.floor(Math.random() * 20) + 40,   
     timestamp: new Date(),
   };
 }
 
-// Fonction pour enregistrer les données dans la base de données
 async function saveData() {
   if (currentData.temperature !== null && currentData.humidity !== null) {
     const mesure = new MesureModel({
@@ -65,52 +67,80 @@ async function saveData() {
       console.error('Erreur lors de l\'enregistrement des données:', err.message);
     }
   }
-} 
+}
 
-cron.schedule('0,1,2 18 * * *', () => {
-  console.log('Enregistrement des données à', new Date());
-  saveData(); // Fonction que vous avez déjà pour enregistrer les mesures
-});
+async function configureCronJobs() {
+  try {
+    const config = await Config.findOne();
+    
+    if (config) {
+      const { hours, minutes } = config;
 
+      cron.getTasks().forEach((task) => task.destroy());
+
+      hours.forEach((hour) => {
+        minutes.forEach((minute) => {
+          const cronExpression = `${minute} ${hour} * * *`;
+          
+          cron.schedule(cronExpression, () => {
+            console.log(`Enregistrement des données à ${hour}:${minute}`);
+            saveData(); 
+          });
+        });
+      });
+
+      console.log('Les tâches cron ont été reconfigurées avec succès.');
+    } else {
+      console.error('Aucune configuration trouvée dans la base de données.');
+    }
+  } catch (err) {
+    console.error('Erreur lors de la reconfiguration des tâches cron:', err);
+  }
+}
+
+configureCronJobs();
 
 app.get('/api/mesures/specific-times', async (req, res) => {
   try {
+    const config = await Config.findOne();
+
+    if (!config) {
+      return res.status(404).json({ message: 'Configuration des heures introuvable' });
+    }
+
+    const { hours, minutes } = config;
+
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Début du jour actuel
+    today.setHours(0, 0, 0, 0);
 
     const tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate() + 1); // Début du jour suivant
+    tomorrow.setDate(today.getDate() + 1);
 
     const mesures = await MesureModel.find({
       timestamp: { $gte: today, $lt: tomorrow },
     }).sort({ timestamp: 1 });
 
-    // Filtrer les mesures pour obtenir celles à 18h00, 18h01 et 18h02
-    const fixedTimes = [
-      { hour: 18, minute: 0 },
-      { hour: 18, minute: 1 },
-      { hour: 18, minute: 2 },
-    ];
+    const filteredMesures = [];
 
-    const filteredMesures = fixedTimes.map(time => {
-      return mesures.find(mesure => {
-        const mesureDate = new Date(mesure.timestamp);
-        return (
-          mesureDate.getHours() === time.hour &&
-          mesureDate.getMinutes() === time.minute
-        );
+    hours.forEach(hour => {
+      minutes.forEach(minute => {
+        const mesure = mesures.find(m => {
+          const mesureDate = new Date(m.timestamp);
+          return mesureDate.getHours() === parseInt(hour, 10) && mesureDate.getMinutes() === parseInt(minute, 10);
+        });
+        if (mesure) {
+          filteredMesures.push({
+            temperature: mesure.temperature,
+            humidity: mesure.humidity,
+            timestamp: mesure.timestamp,
+          });
+        }
       });
-    }).filter(Boolean); // Retirer les valeurs `undefined` si aucune mesure n'existe pour une heure donnée
-
-    const response = filteredMesures.map(mesure => ({
-      temperature: mesure.temperature,
-      humidity: mesure.humidity,
-      timestamp: mesure.timestamp,
-    }));
+    });
 
     res.json({
       message: 'Mesures récupérées avec succès',
-      data: response,
+      data: filteredMesures,
     });
   } catch (err) {
     console.error('Erreur lors de la récupération des données:', err);
@@ -118,19 +148,52 @@ app.get('/api/mesures/specific-times', async (req, res) => {
   }
 });
 
+app.post('/api/configure-times', async (req, res) => {
+  const { hours, minutes } = req.body;
 
-// Route pour obtenir l'historique des mesures de la semaine
+  if (!Array.isArray(hours) || !Array.isArray(minutes)) {
+    return res.status(400).json({ message: 'Format invalide pour les heures ou minutes' });
+  }
+
+  try {
+    const updatedConfig = await Config.findOneAndUpdate(
+      {},  
+      { hours, minutes },
+      { new: true, upsert: true }
+    );
+
+    return res.status(200).json({
+      message: 'Configuration mise à jour',
+      configuredTimes: updatedConfig
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Erreur lors de la mise à jour', error });
+  }
+});
+
+app.get('/api/configure-times', async (req, res) => {
+  try {
+    const config = await Config.findOne({});  
+    if (!config) {
+      return res.status(404).json({ message: 'Configuration non trouvée' });
+    }
+    return res.status(200).json(config);
+  } catch (error) {
+    return res.status(500).json({ message: 'Erreur lors de la récupération des configurations', error });
+  }
+});
+
 app.get('/api/historique/hebdomadaire', async (req, res) => {
   try {
     const startOfWeek = new Date();
-    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // Commence le lundi
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); 
 
     const mesures = await MesureModel.find({
       timestamp: { $gte: startOfWeek }
-    }).sort({ timestamp: 1 }); // Tri croissant par date
+    }).sort({ timestamp: 1 });
 
     const response = mesures.map(mesure => ({
-      date: mesure.timestamp.toLocaleDateString('fr-FR', { weekday: 'long' }), // Récupère le jour de la semaine
+      date: mesure.timestamp.toLocaleDateString('fr-FR', { weekday: 'long' }), 
       temperature: mesure.temperature,
       humidity: mesure.humidity,
     }));
@@ -144,25 +207,23 @@ app.get('/api/historique/hebdomadaire', async (req, res) => {
     res.status(500).json({ message: 'Erreur interne du serveur' });
   }
 });
-// Obtenir l'humidité en temps réel
+
 app.get('/api/real-time/humidity', (req, res) => {
   if (currentData.humidity !== null) {
-    console.log(`Humidité en temps réel : ${currentData.humidity}% à ${currentData.timestamp}`);
     res.json({ humidity: currentData.humidity, timestamp: currentData.timestamp });
   } else {
     res.status(404).json({ message: 'Aucune donnée d\'humidité disponible.' });
   }
 });
-// Obtenir la température en temps réel
+
 app.get('/api/real-time/temperature', (req, res) => {
   if (currentData.temperature !== null) {
-    console.log(`Température en temps réel : ${currentData.temperature}°C à ${currentData.timestamp}`);
     res.json({ temperature: currentData.temperature, timestamp: currentData.timestamp });
   } else {
     res.status(404).json({ message: 'Aucune donnée de température disponible.' });
   }
 });
-// Route pour obtenir la température et l'humidité moyennes de la journée
+
 app.get('/api/moyennes/jour', async (req, res) => {
   try {
     const today = new Date();
@@ -197,82 +258,41 @@ app.get('/api/moyennes/jour', async (req, res) => {
     res.status(500).json({ message: 'Erreur interne du serveur' });
   }
 });
-// Configuration du port série
+
 const port = new SerialPort({ path: SERIAL_PORT, baudRate: 9600 });
 const parser = port.pipe(new ReadlineParser({ delimiter: '\r\n' }));
 
-// WebSocket : connexion avec les clients
 io.on('connection', (socket) => {
   console.log('Client connecté :', socket.id);
-  
+
   socket.on('toggleFan', (status) => {
-    
-});
-
-// Variables d'état
-let fanState = false;
-
-app.post('/api/fan/control', (req, res) => {
-  // Utilisation de `state` sans l'extraire de `req.body`
-  console.log(`Commande reçue pour le ventilateur : ${state ? 'ON' : 'OFF'}`);
-});
-
-
-app.post('/api/fan/control', (req, res) => {
-  const { state } = req.body; // Extraction de `state` depuis le corps de la requête
-
-  if (typeof state === 'boolean') {
-    console.log(`Commande reçue pour le ventilateur : ${state ? 'ON' : 'OFF'}`);
-    fanState = state; // Mettre à jour l'état global du ventilateur
-    res.sendStatus(200); // Réponse au client
-  } else {
-    console.error('Erreur : valeur de state invalide');
-    res.status(400).json({ error: 'Valeur de state invalide' });
-  }
-});
-
-
-// Envoi immédiat des données actuelles au client nouvellement connecté
-  if (currentData.temperature !== null && currentData.humidity !== null) {
-    socket.emit('update', currentData);
-  }
-
-  socket.on('disconnect', () => {
-    console.log('Client déconnecté :', socket.id);
+    // Logique de contrôle du ventilateur ici
   });
 });
 
-// Lecture des données Arduino
-parser.on('data', async (data) => {
-  try {
-    const parsed = JSON.parse(data); // Assurez-vous que l'Arduino envoie des données au format JSON
-    // Mise à jour des données en temps réel
-    currentData = {
-      temperature: parsed.temperature,
-      humidity: parsed.humidity,
-      timestamp: new Date(),
-    };
+let fanState = false;
 
-    // Diffusion des données en temps réel à tous les clients connectés
-    io.emit('update', currentData);
+app.post('/api/fan/control', (req, res) => {
+  const { state } = req.body;
 
-    // Affichage des données en temps réel dans la console
-    console.log(`Température en temps réel : ${currentData.temperature}°C`);
-    console.log(`Humidité en temps réel : ${currentData.humidity}%`);
-
-  } catch (err) {
-    console.error('Erreur de parsing des données Arduino :', err.message);
+  if (typeof state !== 'boolean') {
+    return res.status(400).json({ message: 'Le statut du ventilateur doit être un booléen' });
   }
+
+  fanState = state;
+
+  // Simuler l'envoi de la commande à l'Arduino pour contrôler le ventilateur
+  console.log(fanState ? 'Ventilateur activé' : 'Ventilateur désactivé');
+
+  res.json({ message: 'Contrôle du ventilateur effectué', fanState });
 });
 
-// Gestion des erreurs du port série
-port.on('open', () => console.log(`Port série ouvert sur ${SERIAL_PORT}`));
-port.on('error', (err) => console.error('Erreur port série :', err.message));
+parser.on('data', (data) => {
+  console.log('Données reçues de Arduino:', data);
+  currentData = getSensorData(); 
+  io.emit('real-time', currentData);
+});
 
-// Lancement du serveurod
 server.listen(PORT, () => {
-  console.log(`Serveur Node.js actif sur http://localhost:${PORT}`);
-  console.log(`Serveur actif. État initial du ventilateur : ${fanState ? 'ON' : 'OFF'}`);
-
-
+  console.log(`Serveur en écoute sur le port ${PORT}`);
 });
