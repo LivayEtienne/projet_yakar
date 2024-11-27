@@ -26,10 +26,31 @@
   min-height: 500px; /* Hauteur minimale pour petits écrans */
 }
 
-img {
-  width: 100px;
-  margin: none;
+/* Enlever l'image à partir de 768px */
+@media (max-width: 768px) {
+  .login-image {
+    display: none; /* Masquer l'image */
+  }
+
+  .login-content {
+    flex-direction: column; /* Empiler les sections pour les petits écrans */
+    width: 90%;
+  }
+
+  .login-form {
+    width: 100%; /* Prendre toute la largeur disponible */
+    padding: 1rem;
+  }
+
+  .modal-container {
+    width: 90%;
+  }
+
+  h6 {
+    margin: 1px;
+  }
 }
+
 /* Style de la fenêtre modale */
 .modal-overlay {
   position: fixed;
@@ -111,6 +132,10 @@ img {
   transition: background-color 0.3s ease;
 }
 
+.titre1{
+  width: 100%;
+}
+
 #btnSubmit {
   margin-left: 25%;
   margin-bottom: 30px;
@@ -158,7 +183,7 @@ img {
 }
 
 .logo {
-  max-width: 150px;
+  max-width: 200px;
 }
 
 .login-form {
@@ -211,14 +236,21 @@ input:focus {
   .login-form {
     padding: 1rem;
     width: 90%;
+    
   }
   .modal-container {
     width: 90%;
- 
   }
+  .logo{
+    max-width: 100px;
+  }
+
 
   h6 {
     margin: 1px;
+  }
+  .titre1{
+    font-size: 20px;
   }
 }
 
@@ -245,4 +277,4 @@ input.invalid {
 
 .disable-mouse {
   pointer-events: none; /* Toujours désactiver les interactions de la souris */
-}
+}  
