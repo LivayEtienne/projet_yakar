@@ -8,8 +8,8 @@ import { Observable} from 'rxjs';
 export class WebsocketService {
 
   private socket$: any;
-  private socketUrl: string = 'ws://localhost:8080'; // URL du serveur WebSocket (Node.js)
-
+  private socketUrl: string = 'ws://localhost:8080'; // URL du serveur WebSocket (Node.js
+  
   constructor() {
     // Initialiser la connexion WebSocket
     this.socket$ = webSocket(this.socketUrl);
