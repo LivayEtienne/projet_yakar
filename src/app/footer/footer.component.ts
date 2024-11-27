@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { WebsocketService } from '../web-socket.service';
 
 @Component({
   selector: 'app-footer',
@@ -9,7 +10,10 @@ import { Component } from '@angular/core';
 export class FooterComponent {
   isOn: boolean = false; // État du ventilateur
 
+  constructor(private webSocket: WebsocketService){}
+
   toggleFan() {
+    this.webSocket.sendMessage(this.isOn); // Envoyer 'true' ou 'false'
     this.isOn = !this.isOn; // Change l'état du ventilateur
   }
 }

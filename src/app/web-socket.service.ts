@@ -1,7 +1,6 @@
-import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
-import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
-import { isPlatformBrowser } from '@angular/common';
-import { Observable, of } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { webSocket } from 'rxjs/webSocket';
+import { Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
