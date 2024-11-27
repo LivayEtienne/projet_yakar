@@ -14,6 +14,7 @@ export class TemperatureCardComponent {
 
   ngOnInit(): void {
     this.getTemperature(); // Récupération de la température au démarrage
+   
   }
 
   // Récupérer la température depuis l'API

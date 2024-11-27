@@ -65,15 +65,14 @@ async function saveData() {
       console.error('Erreur lors de l\'enregistrement des données:', err.message);
     }
   }
-}
+} 
 
-// Configuration du cron pour enregistrer les données à 10h, 14h et 17h tous les jours
-cron.schedule('0 10,14,17 * * *', () => {
+cron.schedule('0,1,2 18 * * *', () => {
   console.log('Enregistrement des données à', new Date());
   saveData(); // Fonction que vous avez déjà pour enregistrer les mesures
 });
 
-// Route pour obtenir les relevés à des heures fixes
+
 app.get('/api/mesures/specific-times', async (req, res) => {
   try {
     const today = new Date();
@@ -86,12 +85,20 @@ app.get('/api/mesures/specific-times', async (req, res) => {
       timestamp: { $gte: today, $lt: tomorrow },
     }).sort({ timestamp: 1 });
 
-    // Filtrer les mesures pour obtenir celles à 10h, 14h et 17h
-    const fixedHours = [10, 14, 17];
-    const filteredMesures = fixedHours.map(hour => {
+    // Filtrer les mesures pour obtenir celles à 18h00, 18h01 et 18h02
+    const fixedTimes = [
+      { hour: 18, minute: 0 },
+      { hour: 18, minute: 1 },
+      { hour: 18, minute: 2 },
+    ];
+
+    const filteredMesures = fixedTimes.map(time => {
       return mesures.find(mesure => {
         const mesureDate = new Date(mesure.timestamp);
-        return mesureDate.getHours() === hour && mesureDate.getMinutes() === 0;
+        return (
+          mesureDate.getHours() === time.hour &&
+          mesureDate.getMinutes() === time.minute
+        );
       });
     }).filter(Boolean); // Retirer les valeurs `undefined` si aucune mesure n'existe pour une heure donnée
 
@@ -110,6 +117,8 @@ app.get('/api/mesures/specific-times', async (req, res) => {
     res.status(500).json({ message: 'Erreur interne du serveur' });
   }
 });
+
+
 // Route pour obtenir l'historique des mesures de la semaine
 app.get('/api/historique/hebdomadaire', async (req, res) => {
   try {
@@ -199,54 +208,31 @@ io.on('connection', (socket) => {
   socket.on('toggleFan', (status) => {
     
 });
-let fanState = false; // État initial du ventilateur (éteint)
 
-app.get('/api/fan/state', (req, res) => {
-  res.json({ state: fanState });
-});
+// Variables d'état
+let fanState = false;
 
 app.post('/api/fan/control', (req, res) => {
-  const { state } = req.body;
+  // Utilisation de `state` sans l'extraire de `req.body`
+  console.log(`Commande reçue pour le ventilateur : ${state ? 'ON' : 'OFF'}`);
+});
+
+
+app.post('/api/fan/control', (req, res) => {
+  const { state } = req.body; // Extraction de `state` depuis le corps de la requête
+
   if (typeof state === 'boolean') {
-    fanState = state;
-    console.log(`Ventilateur ${state ? 'allumé' : 'éteint'}`);
-    res.status(200).json({ message: 'État du ventilateur mis à jour avec succès' });
+    console.log(`Commande reçue pour le ventilateur : ${state ? 'ON' : 'OFF'}`);
+    fanState = state; // Mettre à jour l'état global du ventilateur
+    res.sendStatus(200); // Réponse au client
   } else {
-    res.status(400).json({ message: 'Donnée invalide' }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-    );
+    console.error('Erreur : valeur de state invalide');
+    res.status(400).json({ error: 'Valeur de state invalide' });
   }
 });
 
 
-
-  // Envoi immédiat des données actuelles au client nouvellement connecté
+// Envoi immédiat des données actuelles au client nouvellement connecté
   if (currentData.temperature !== null && currentData.humidity !== null) {
     socket.emit('update', currentData);
   }
@@ -283,7 +269,10 @@ parser.on('data', async (data) => {
 port.on('open', () => console.log(`Port série ouvert sur ${SERIAL_PORT}`));
 port.on('error', (err) => console.error('Erreur port série :', err.message));
 
-// Lancement du serveur
+// Lancement du serveurod
 server.listen(PORT, () => {
   console.log(`Serveur Node.js actif sur http://localhost:${PORT}`);
+  console.log(`Serveur actif. État initial du ventilateur : ${fanState ? 'ON' : 'OFF'}`);
+
+
 });

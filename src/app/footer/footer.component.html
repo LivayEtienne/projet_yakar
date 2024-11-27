@@ -1,6 +1,10 @@
 <footer class="footer">
   <div class="fan-container">
-    <img src="assets/fan-gif-79-smooth-ventilator.gif" alt="Ventilateur" class="fan-gif" />
+    <img
+      src="assets/fan-gif-79-smooth-ventilator.gif"
+      alt="Ventilateur"
+      class="fan-gif"
+    />
     <button [class.green]="isOn" [class.red]="!isOn" (click)="toggleFan()">
       {{ isOn ? 'Éteindre' : 'Allumer' }}
     </button>
