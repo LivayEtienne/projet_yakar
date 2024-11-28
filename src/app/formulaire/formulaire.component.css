@@ -1,106 +1,105 @@
 /* Style pour le bouton d'ouverture du modal avec icône */
 .btn-open-modal {
-    padding: 12px 25px; /* Augmentation de la taille du bouton */
-    background-color: #227C70;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    height: 60px;
-    font-size: 18px; /* Agrandir la taille du texte */
-    cursor: pointer;
-    display: flex; /* Utilisation de flexbox pour aligner l'icône et le texte */
-    align-items: center; /* Aligner l'icône verticalement */
-    gap: 8px; /* Espace entre l'icône et le texte */
-    transition: background-color 0.3s ease; /* Transition de couleur au survol */
-  }
-  
-  .btn-open-modal:hover {
-    background-color: #227C70;
-  }
-  
-  /* Icône à côté du texte dans le bouton */
-  .btn-open-modal i {
-    font-size: 20px; /* Taille de l'icône */
-  }
-  
-  /* Style du modal */
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* S'assurer que le modal est au-dessus des autres éléments */
-  }
-  
-  /* Contenu du modal */
-  .modal-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    width: 400px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Bouton de fermeture du modal */
-  .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 22px;
-    cursor: pointer;
-    color: #333;
-  }
-  
-  /* Style du formulaire à l'intérieur du modal */
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  .form-group label {
-    display: block;
-    margin-bottom: 5px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  /* Bouton de soumission */
-  .btn-submit {
-    width: 100%;
-    padding: 12px;
-    background-color: #227C70;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .btn-submit:hover {
-    background-color: #227C70;
-  }
-  
-  /* Bouton "Fermer" à l'intérieur du modal */
-  .btn-close-modal {
-    width: 100%;
-    padding: 12px;
-    background-color: #f44336;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-top: 10px; /* Espacement entre les boutons */
-  }
-  
-  .btn-close-modal:hover {
-    background-color: #e53935;
-  }
-  
+  padding: 12px 25px; /* Augmentation de la taille du bouton */
+  background-color: #227C70;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  height: 60px;
+  font-size: 18px; /* Agrandir la taille du texte */
+  cursor: pointer;
+  display: flex; /* Utilisation de flexbox pour aligner l'icône et le texte */
+  align-items: center; /* Aligner l'icône verticalement */
+  gap: 8px; /* Espace entre l'icône et le texte */
+  transition: background-color 0.3s ease; /* Transition de couleur au survol */
+}
+
+.btn-open-modal:hover {
+  background-color: #227C70;
+}
+
+/* Icône à côté du texte dans le bouton */
+.btn-open-modal i {
+  font-size: 20px; /* Taille de l'icône */
+}
+
+/* Style du modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* S'assurer que le modal est au-dessus des autres éléments */
+}
+
+/* Contenu du modal */
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bouton de fermeture du modal */
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* Style du formulaire à l'intérieur du modal */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Bouton de soumission */
+.btn-submit {
+  width: 100%;
+  padding: 12px;
+  background-color: #227C70;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: #227C70;
+}
+
+/* Bouton "Fermer" à l'intérieur du modal */
+.btn-close-modal {
+  width: 100%;
+  padding: 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px; /* Espacement entre les boutons */
+}
+
+.btn-close-modal:hover {
+  background-color: #e53935;
+}

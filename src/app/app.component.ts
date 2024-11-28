@@ -1,7 +1,7 @@
 // src/app/app.component.ts
+// src/app/app.component.ts
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';  // Importation de RouterModule pour gérer la navigation
-import { routes } from './app.routes';  // Importation de la configuration des routes
 import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
 
 @Component({
@@ -12,6 +12,7 @@ import { ThemeToggleComponent } from '../theme-toggle/theme-toggle.component';
     <router-outlet></router-outlet>  <!-- Le router-outlet pour afficher les composants -->`
 })
 export class AppComponent {}
+
 
 
 

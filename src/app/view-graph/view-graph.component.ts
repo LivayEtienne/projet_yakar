@@ -16,17 +16,13 @@ export class ViewGraphComponent implements OnInit {
   public sensorData: { temperature: number; humidity: number } = { temperature: 0, humidity: 0 };
   private socketSubscription: Subscription | undefined;
 
-  constructor(private webSocketService: WebsocketService, private apiService: ApiService) {}
+  constructor(private webSocketService: WebsocketService) {}
 
   ngOnInit(): void {
     // Initialiser le graphique avec des données fictives
     this.initializeGraph();
 
-    this.socketSubscription = this.webSocketService.getMessages().subscribe((data) => {
-      
-        this.sensorData.temperature = data.temperature;
-        this.sensorData.humidity = data.humidity;
-    });
+
     // Mettre à jour les données en temps réel toutes les 5 secondes
     setInterval(() => this.updateRealTimeData(), 1000);
   }
@@ -82,32 +78,17 @@ export class ViewGraphComponent implements OnInit {
     if (!this.chart) return;
 
     // Récupérer les données de température
-    this.apiService.getRealTimeTemperature().subscribe(
-      (tempResponse) => {
-        const temperature = tempResponse.temperature;
-        const timestamp = tempResponse.timestamp;
+    this.socketSubscription = this.webSocketService.getMessages().subscribe((data) => {
+      
+      this.sensorData.temperature = data.temperature;
+      this.sensorData.humidity = data.humidity;
+  });
+    // Mettre à jour la série de température
+    const tempSeries = this.chart?.series[0];
+    tempSeries?.addPoint(this.sensorData.temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points
 
-        // Mettre à jour la série de température
-        const tempSeries = this.chart?.series[0];
-        tempSeries?.addPoint(temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération de la température:', error);
-      }
-    );
+    const humSeries = this.chart?.series[1];
+    humSeries?.addPoint(this.sensorData.humidity, true, humSeries.data.length >= 10); // Garde un historique de 10 points
 
-    // Récupérer les données d'humidité
-    this.apiService.getRealTimeHumidity().subscribe(
-      (humResponse) => {
-        const humidity = humResponse.humidity;
-
-        // Mettre à jour la série d'humidité
-        const humSeries = this.chart?.series[1];
-        humSeries?.addPoint(humidity, true, humSeries.data.length >= 10); // Garde un historique de 10 points
-      },
-      (error) => {
-        console.error('Erreur lors de la récupération de l\'humidité:', error);
-      }
-    );
   }
 }

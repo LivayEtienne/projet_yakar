@@ -8,6 +8,9 @@
 .fan-container {
   display: flex;
   align-items: center; /* Centre verticalement le contenu */
+  padding-top: 26rem;
+  padding-right: 100rem;
+
 }
 
 .fan-gif {

@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { WebsocketService } from '../web-socket.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { ThemeToggleComponent } from '../../theme-toggle/theme-toggle.component';
@@ -40,7 +39,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private fb: FormBuilder,
     private router: Router,
-    private codeService: CodeService
+    private codeService: CodeService,
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]], // Validation email
@@ -50,7 +49,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
    
-
     // Écoute des données reçues
     this.socketSubscription = this.codeService.getMessages().subscribe((message) => {
       if (message.type === 'keypad') {
@@ -68,8 +66,9 @@ export class LoginComponent implements OnInit, OnDestroy {
    */
    addCharacterToCode(char: string): void {
     if (this.currentIndex < 4) {
+      console.log("before: ", this.code)
       // Ajout du caractère reçu
-      this.code[this.currentIndex] = char; // Stocke la vraie valeur
+      this.code[this.currentIndex] = char.replace(/\r|\n/g, '');  // Enlève les caractères de contrôl et Stocke la vraie valeur
       this.maskedCode[this.currentIndex] = char; // Affiche temporairement le caractère
   
       const currentIndex = this.currentIndex; // Capture l'index actuel pour setTimeout
@@ -80,9 +79,7 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.maskedCode[currentIndex] = '•'; // Remplace par un point noir
         }
       }, 500);
-  
       this.currentIndex++; // Passe au champ suivant
-  
       // Valider automatiquement lorsque tous les champs sont remplis
       if (this.currentIndex === 4) {
         this.validateCode();
@@ -108,7 +105,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       const nextInput = document.querySelectorAll<HTMLInputElement>('.code-input input')[index + 1];
       if (nextInput) {
         nextInput.focus();
-      } else if (index === 3) {
+      } else if (index === 4 ) {
         // Valider si tous les champs sont remplis
         this.validateCode();
       }
@@ -131,8 +128,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   validateCode(): void {
-    const codeValue = this.code.join(''); // Concaténer les 4 caractères pour former le code
-
+    console.log(this.code)
+    const codeValue = this.code.join('').replace(/\r|\n/g, ''); // Concaténer les 4 caractères pour former le code
+    console.log(codeValue.length)
     if (codeValue.length === 4) {
       // Soumettre le code au backend
       this.authService.loginWithCode(codeValue).subscribe({

@@ -35,7 +35,7 @@ export class ApiService {
     );
   }
   getMoyennesDuJour(): Observable<{ averageTemperature: number; averageHumidity: number }> {
-    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes/jour`).pipe(
+    return this.http.get<{ message: string; averageTemperature: number; averageHumidity: number }>(`${this.apiUrl}/moyennes`).pipe(
       map(response => ({
         averageTemperature: response.averageTemperature,
         averageHumidity: response.averageHumidity,
@@ -58,21 +58,23 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/configure-times`, { hours, minutes });
   }
   
-  
-
-  getRelevesFixes(): Observable<{ time: string; temperature: number; humidity: number }[]> {
+  getRelevesFixes(): Observable<{ temperature: number; humidity: number ; date: string }[]> {
     return this.http
-      .get<{ message: string; data: { timestamp: string; temperature: number; humidity: number }[] }>(
+      .get<{ message: string; data: { temperature: number; humidity: number; date: string  }[] }>(
+
         `${this.apiUrl}/mesures/specific-times`
       )
       .pipe(
         map(response => {
-          return response.data.map(item => ({
-            time: new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format HH:MM
+          console.log(response)
+          return response.data.map((item: { date: string | number | Date; temperature: any; humidity: any; }) => ({
+            date: new Date(item.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }), // Format HH:MM
             temperature: item.temperature,
             humidity: item.humidity,
           }));
         })
       );
   }
+
+  
 }
