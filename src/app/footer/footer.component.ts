@@ -8,7 +8,7 @@ import { WebsocketService } from '../web-socket.service';
   styleUrls: ['./footer.component.css']
 })
 export class FooterComponent {
-  isOn: boolean = false; // État du ventilateur
+  isOn: boolean = true; // État du ventilateur
 
   constructor(private webSocket: WebsocketService){}
 

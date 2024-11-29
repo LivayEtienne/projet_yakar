@@ -76,20 +76,27 @@ export class ViewGraphComponent implements OnInit {
 
   updateRealTimeData(): void {
     if (!this.chart) return;
-
+  
     // Récupérer les données de température
     this.socketSubscription = this.webSocketService.getMessages().subscribe((data) => {
-      
+      // Mettre à jour les données du capteur
       this.sensorData.temperature = data.temperature;
       this.sensorData.humidity = data.humidity;
-  });
+    
+      // Récupérer la série de température
+      const tempSeries = this.chart?.series[0];
+      if (tempSeries) {
+        // Ajouter un point avec un horodatage (Date.now() pour l'axe x)
+        tempSeries.addPoint([ this.sensorData.temperature], true, tempSeries.data.length >= 10);
+      }
   
-    // Mettre à jour la série de température
-    const tempSeries = this.chart?.series[0];
-    tempSeries?.addPoint(this.sensorData.temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points
-
-    const humSeries = this.chart?.series[1];
-    humSeries?.addPoint(this.sensorData.humidity, true, humSeries.data.length >= 10); // Garde un historique de 10 points
-
+      // Récupérer la série d'humidité
+      const humSeries = this.chart?.series[1];
+      if (humSeries) {
+        // Ajouter un point avec un horodatage (Date.now() pour l'axe x)
+        humSeries.addPoint([ this.sensorData.humidity], true, humSeries.data.length >= 10);
+      }
+    });
   }
+  
 }
