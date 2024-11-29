@@ -37,6 +37,9 @@ export class FormulaireComponent {
     // Appeler l'API pour enregistrer les nouvelles valeurs
     this.apiService.setConfiguredTimes(hours, minutes).subscribe(() => {
       alert('Configuration enregistrée avec succès.');
+      setTimeout(() => {
+        window.location.reload(); // Actualiser la page après 2 secondes
+      }, 2000);
       this.closeModal(); // Fermer le modal après soumission
     });
   }

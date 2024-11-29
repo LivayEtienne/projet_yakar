@@ -35,7 +35,7 @@ export class TemperatureCardComponent {
   startTemperatureUpdates() {
     this.updateInterval = setInterval(() => {
       this.getTemperature(); // Récupérer la température toutes les X millisecondes (par exemple, toutes les 5 secondes)
-    }, 1000); // Mettre à jour toutes les 5 secondes
+    }, 5000); // Mettre à jour toutes les 5 secondes
   }
 
   // Calculer l'offset pour le cercle SVG basé sur la température

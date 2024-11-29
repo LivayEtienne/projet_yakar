@@ -24,7 +24,7 @@ export class ViewGraphComponent implements OnInit {
 
 
     // Mettre à jour les données en temps réel toutes les 5 secondes
-    setInterval(() => this.updateRealTimeData(), 1000);
+    setInterval(() => this.updateRealTimeData(), 5000);
   }
 
  
