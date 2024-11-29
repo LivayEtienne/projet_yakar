@@ -7,6 +7,9 @@ import { User } from '../users';
 import { ModalComponent } from '../../modal/modal.component';
 import { MessageService } from '../message.service';
 
+
+
+
 @Component({
   selector: 'app-list-users',
   standalone: true, // Indique que ce composant est autonome
@@ -23,6 +26,8 @@ export class ListUsersComponent {
   currentPage: number = 1;
   itemsPerPage: number = 5;
 
+  
+
   constructor(private userService: UserService ,private messageService: MessageService ) {}
 
   ngOnInit(): void {
@@ -38,6 +43,7 @@ export class ListUsersComponent {
         console.error('Erreur :', error);
       }
     );
+    
   }
 
   // Filtrer les utilisateurs selon la recherche
@@ -144,9 +150,5 @@ private executeDelete(id: string): void {
         console.error('Erreur lors de la modification de l\'accès:', error);
       }
     );
-  }
-
-
-
-  
+  }  
 }
