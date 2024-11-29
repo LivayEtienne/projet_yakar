@@ -83,6 +83,7 @@ export class ViewGraphComponent implements OnInit {
       this.sensorData.temperature = data.temperature;
       this.sensorData.humidity = data.humidity;
   });
+  
     // Mettre à jour la série de température
     const tempSeries = this.chart?.series[0];
     tempSeries?.addPoint(this.sensorData.temperature, true, tempSeries.data.length >= 10); // Garde un historique de 10 points

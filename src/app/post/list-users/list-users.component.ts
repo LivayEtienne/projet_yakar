@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';  // Importation de FormsModule
 import { User } from '../users';
 import { ModalComponent } from '../../modal/modal.component';
 import { MessageService } from '../message.service';
+import { AuthService } from '../../auth.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ListUsersComponent {
   currentPage: number = 1;
   itemsPerPage: number = 5;
 
-  constructor(private userService: UserService ,private messageService: MessageService, private router: Router ) {}
+  constructor(private userService: UserService ,private messageService: MessageService, private router: Router, private authService: AuthService ) {}
 
   ngOnInit(): void {
     // Charger la liste des utilisateurs
@@ -158,7 +159,9 @@ private executeDelete(id: string): void {
     this.router.navigate(['/dashboard/admin']);
   }
 
-
+  logout(){
+    this.authService.logout();
+  }
 
   
 }

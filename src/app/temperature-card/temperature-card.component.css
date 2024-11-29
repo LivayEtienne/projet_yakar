@@ -9,7 +9,7 @@
   justify-content: space-between;
   text-align: center;
   width: 200px; /* Identique à humidité */
-  height: 140px; /* Identique à humidité */
+  height: 180px; /* Identique à humidité */
   margin: 0 1rem;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -40,11 +40,11 @@
 /* Conteneur du cercle */
 .circular-progress {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 80px;
-  height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px; /* Taille ajustée pour être plus petite mais proportionnelle */
+    height: 80px; /* Taille ajustée pour être plus petite mais proportionnelle */
 }
 
 /* Cercle SVG */

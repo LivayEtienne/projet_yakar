@@ -1,8 +1,8 @@
 <div class="averages-container">
   <div class="average-card">
     <h6>Moyennes de la journée</h6>
-    <p *ngIf="averageTemperature !== null">Température moyenne : {{ averageTemperature | number: '1.0-1' }} °C</p>
-    <p *ngIf="averageHumidity !== null">Humidité moyenne : {{ averageHumidity | number: '1.0-1' }} %</p>
+    <p *ngIf="averageTemperature !== null">Température: {{ averageTemperature | number: '1.0-1' }} °C</p>
+    <p *ngIf="averageHumidity !== null">Humidité: {{ averageHumidity | number: '1.0-1' }} %</p>
     <p *ngIf="averageTemperature === null && averageHumidity === null">Aucune donnée disponible pour aujourd'hui.</p>
   </div>
 </div>

@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.socketSubscription = this.codeService.getMessages().subscribe((message) => {
       if (message.type === 'keypad') {
         const char = message.value;
-        console.log(message.value);
+        //console.log(message.value);
         this.showModal = true;
         this.addCharacterToCode(char);
       }
@@ -65,27 +65,51 @@ export class LoginComponent implements OnInit, OnDestroy {
    * @param char Caractère reçu
    */
    addCharacterToCode(char: string): void {
+    console.log(char);
+    // Si le caractère est 'A', on supprime le dernier caractère ajouté
+    if (char === 'A') {
+      if (this.currentIndex > 0) {
+        // Revenir à l'index précédent (annuler la dernière entrée)
+        this.currentIndex--;
+        this.code[this.currentIndex] = ''; // Supprimer la valeur de l'index précédent
+        this.maskedCode[this.currentIndex] = ''; // Supprimer le masque du champ
+      }
+      return; // Arrêter la fonction après la suppression
+    }
+    
+    // Si le caractère est 'B', 'C', 'D', '*' ou '#', on ne fait rien
+    if (['B', 'C', 'D', '*', '#'].includes(char)) {
+      return; // Ne rien faire, ignorer ces caractères
+    }
+  
+    // Enlève les caractères de contrôle (tels que \r et \n)
+    const cleanedChar = char.replace(/\r|\n/g, '');
+  
     if (this.currentIndex < 4) {
-      console.log("before: ", this.code)
-      // Ajout du caractère reçu
-      this.code[this.currentIndex] = char.replace(/\r|\n/g, '');  // Enlève les caractères de contrôl et Stocke la vraie valeur
-      this.maskedCode[this.currentIndex] = char; // Affiche temporairement le caractère
+      console.log("before: ", this.code);
+  
+      // Ajout du caractère reçu (après nettoyage)
+      this.code[this.currentIndex] = cleanedChar; // Stocke la vraie valeur
+      this.maskedCode[this.currentIndex] = cleanedChar; // Affiche temporairement le caractère
   
       const currentIndex = this.currentIndex; // Capture l'index actuel pour setTimeout
   
       // Masquer le caractère après 2 secondes
       setTimeout(() => {
-        if (this.code[currentIndex] === char) {
+        if (this.code[currentIndex] === cleanedChar) {
           this.maskedCode[currentIndex] = '•'; // Remplace par un point noir
         }
       }, 500);
+  
       this.currentIndex++; // Passe au champ suivant
+  
       // Valider automatiquement lorsque tous les champs sont remplis
       if (this.currentIndex === 4) {
         this.validateCode();
       }
     }
   }
+  
   
 
 
